@@ -1,0 +1,111 @@
+.container_form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    height: 92.5%;
+    background-image: linear-gradient(-45deg, #f7f7fa 0%, #f7f7fa 100%);
+}
+
+.container {
+    position: absolute;
+    background: #ffffff;
+    width: 40vw;
+    height: 80vh;
+    box-shadow: 0 4px 10px 0 rgb(47, 60, 126), 0 6px 20px 0 rgb(220, 210, 20);
+    border-radius: 15px;
+    top: 30px;
+    overflow: hidden;
+
+}
+
+.signin_signup{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 5;
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0 5rem;
+
+}
+form.sign_in_form {
+    opacity: 1;
+    transition: 0.5s ease-in-out;
+    transition-delay: 1s;
+}
+
+.title {
+    margin-bottom: 45px;
+    font-family: "Koulen", cursive;
+    font-family: "Playfair Display SC", serif;
+    color: rgb(0, 0, 0);
+    font-size: 50px;
+}
+
+.input_field {
+    width: 350px;
+    height: 40px;
+    background-color: rgb(226, 223, 219);
+    margin: 15px 0;
+    border-radius: 10px;
+    display: flex;
+    grid-template-columns: 15% 85%;
+    padding: 0 0.5rem;
+    position: relative;
+    align-items: center;
+}
+
+.input_field i {
+    flex: 1;
+    text-align: center;
+    line-height: 25px;
+    color: #848383;
+    font-size: 1rem;
+}
+
+.input_field input {
+    flex: 5;
+    background: none;
+    outline: none;
+    border: none;
+    line-height: 1;
+    font-weight: 4000;
+    font-size: 1rem;
+    color: #333;
+    width: 100%;
+}
+
+.btn {
+    width: 130px;
+    height: 30px;
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    background-color: #dcd214;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin: 10px 0;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.btn:hover   {
+    background-color: #dbffb7;
+    color: #000000;
+
+}

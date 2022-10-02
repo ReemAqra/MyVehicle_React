@@ -1,0 +1,11 @@
+$navbar_width: 50px;
+$spaceing-lg :32px;
+$spaceing-md:16px;
+
+@mixin breakPoint($point){
+  @if $point == md {
+    @media (min-width: 48cm) {
+      @content;
+    }
+  }
+}
