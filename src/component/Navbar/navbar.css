@@ -9,9 +9,28 @@
   color: white;
   font-size: 5px;
 }
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   ._header_contant_item {
-    display: none;
+    position: relative;
+  }
+  ._header_contant_item ul {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    top: 8px;
+    left: -100%;
+    opacity: 1;
+    text-align: center;
+    transition: all 0.5s ease;
+  }
+  ._header_contant_item ul.active {
+    background-color: #3e5a6e;
+    float: top;
+    left: 0;
+    opacity: 1;
+    transition: all 0.5s ease;
+    z-index: 10000;
   }
 }
 ._header_contant_item ul li:hover {
@@ -20,16 +39,61 @@
   border-top-right-radius: 25px;
   border-bottom-left-radius: 25px;
 }
+._header_contant_btndiv.active {
+  float: top;
+  left: 0;
+  opacity: 1;
+  transition: all 0.5s ease;
+  z-index: 1000;
+  margin-right: 2px;
+}
+@media (max-width: 768px) {
+  ._header_contant_btndiv {
+    background-color: #3e5a6e;
+    position: absolute;
+    top: 210px;
+    padding: 15px;
+    justify-content: center;
+    width: 100%;
+    left: -100%;
+    text-align: center;
+    transition: all 0.5s ease;
+    flex-direction: row;
+    opacity: 1;
+  }
+}
 ._header_logo {
   font-family: fantasy;
 }
 
 ._header_toggle {
-  display: flex;
-  position: absolute;
+  display: none;
 }
-._header_toggle:hover {
-  color: rgba(71, 128, 183, 0.13);
+@media screen and (max-width: 768px) {
+  ._header_toggle {
+    display: flex;
+    position: absolute;
+    color: #dcd214;
+  }
+  ._header_toggle:hover {
+    color: rgba(71, 128, 183, 0.13);
+  }
+}
+
+._header_content_btndiv {
+  z-index: 100;
+}
+@media (max-width: 768px) {
+  ._header_content_btndiv {
+    background-color: #3e5a6e;
+    position: absolute;
+    top: 80px;
+    padding: 2rem;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    transition: all 0.5s ease;
+  }
 }
 
 ._header_content_btn {
@@ -39,7 +103,7 @@
 }
 @media (max-width: 768px) {
   ._header_content_btn {
-    display: none;
+    position: relative;
   }
 }
 ._header_content_btn:hover {

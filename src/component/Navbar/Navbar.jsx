@@ -1,94 +1,80 @@
 import React, { useEffect,Component, useState } from "react";
-import style from "./navbar.css"
-
-import bootstrap from'bootstrap/dist/css/bootstrap.min.css'
 import {Link  , Outlet} from "react-router-dom";
-//import style from "./navbar_css.css"
 import { AiOutlineClose , AiOutlineUnorderedList}  from "react-icons/ai";
+import {ImMenu}  from "react-icons/im";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import style_Navbar from "./navbar.css"
+import {motion } from 'framer-motion'
+import {UseAuth} from "../../context/AuthContext";
 
-import css from "./navbar.css"
-class Navbar extends Component {
-render() {
+export default function Navbar() {
+const [clicked,setclicked]=useState(false)
+    const { user } =UseAuth();
+
+    function handleClick (){
+        setclicked(!clicked)
+    }
+
     return (
         <>
             <header className=" w-100   _header ">
                 <div className="navbar navbar-expand-md ">
                     <Link className="navbar-brand text-white ms-3 p-2 _header_logo" to="/">MyVehicle</Link>
                     <nav  className="container-fluid  navbar-expand-md _header_content">
-                        <div className="_header_contant_item container-fluid btn-danger  justify-content-center m-0">
-                            <ul className="nav  justify-content-center ">
-                                <li className="nav-item   text-uppercase  m-1 fs-5 ">
+                        <div className="_header_contant_item container-fluid   justify-content-center m-0">
+                            {/* Menu */}
+                            <motion.ul className={clicked ? "nav justify-content-centers active" : "nav justify-content-center"}>
+                                <motion.li
+                                    whileHover={{ scale: 0.9 }}
+                                    whileTap={{ scale: 1.1 }}
+                                    className="nav-item text-uppercase  m-1 fs-5 ">
                                     <Link className="nav-link text-white" to="Home">HOME</Link>
-                                </li>
-                                <li className="nav-item text-uppercase m-1 fs-5 ">
+                                </motion.li>
+                                <motion.li
+                                    whileHover={{ scale: 0.9 }}
+                                    whileTap={{ scale: 1.1 }}
+                                    className="nav-item text-uppercase m-1 fs-5 ">
                                     <Link className="nav-link text-white" to="Product">Product</Link>
-                                </li>
-                                <li className="nav-item text-uppercase m-1  fs-5">
+                                </motion.li>
+                                <motion.li
+                                    whileHover={{ scale: 0.9 }}
+                                    whileTap={{ scale: 1.1 }}
+                                    className="nav-item text-uppercase m-1  fs-5">
                                     <Link className="nav-link text-white" to='about'>about</Link>
-                                </li>
-                            </ul>
+                                </motion.li>
+                            </motion.ul>
                         </div>
-                        <Link className="_header_content_btn  border border-1  ps-2 pe-2 p-1  me-3" to='Login'>LOGIN</Link>
-                        <Link className="_header_content_btn  border border-1 ps-2 pe-2 p-1  me-3" to="Signin">SIGNIN</Link>
+                        {!user ?
+                        <div className={clicked ? "_header_contant_btndiv active" : "_header_contant_btndiv"}>
+                            <Link
+                                className="_header_content_btn  border border-1  ps-2 pe-2 p-1  me-3" to='Login'>LOGIN
+                            </Link>
+                            <Link
+                                className="_header_content_btn  border border-1 ps-2 pe-2 p-1  me-3" to="Signup">SIGNUP
+                            </Link>
+                        </div>
+                            :
+                        <div className={clicked ? "_header_contant_btndiv active" : "_header_contant_btndiv"}>
+                            <Link
+                                className="_header_content_btn  border border-1 ps-2 pe-2 p-1  me-3" to="Account">Account
+                            </Link>
+                        </div>}
                     </nav>
                     {/* SMALL SCREEN */}
-                    <button className="_header_toggle navbar-toggler end-0 text-white  text-black fs-1 me-2  p-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbar_Nav">
-                        < AiOutlineUnorderedList />
-                    </button>
-                 <div id="navbar_Nav" className="collapse">
-                     <ul className="  ">
-                         <li className="   text-uppercase  m-1 fs-5 ">
-                             <Link className=" text-white" to="Home">HOME______</Link>
-                         </li>
-                         <li className=" text-uppercase m-1 fs-5 ">
-                             <Link className=" text-white" to="Product">Product</Link>
-                         </li>
-                         <li className=" text-uppercase m-1  fs-5">
-                             <Link className=" text-white" to='about'>about</Link>
-                         </li>
-                     </ul>
-                 </div>
+                    <motion.button
+                        whileHover ={{scale:1.1}}
+                        whileTap={{scale:0.9}}
+                        onClick={handleClick}
+                        className="_header_toggle end-0 text-white  text-black  me-2  p-2 border-0 "
+                        style={{background:"inherit" }} type="button" >
+                        <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
+                    </motion.button>
                 </div>
             </header>
-
-            <header className=" w-100  _header1">
-                <div className=" _header1_contant1 ">
-                    <Link className="_header_logo navbar-brand fs-5 ms-4 " to="/">My Vehicle</Link>
-                    <nav className="_header_nav">
-                        <ul className="">
-                            <li className="nav-item text-uppercase fs-6 text-dark">
-                                <Link className="nav-link text-dark " to="Home">HOME</Link>
-                            </li>
-                            <li className="nav-item text-uppercase fs-6 text-dark">
-                                <Link className="nav-link text-dark" to="Product">Product</Link>
-                            </li>
-                            <li className="nav-item text-uppercase fs-6 text-dark">
-                                <Link className="nav-link text-dark" to='about'>about</Link>
-                            </li>
-                        </ul>
-                    </nav>
-
-                    <div className="_header_toggle">
-
-                    </div>
-                    <button className="_header_btn  float-end p-2 h1  border-0 rounded-2 bg-transparent" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbar_Nav">
-                        < AiOutlineUnorderedList />
-                    </button>
-
-
-                </div>
-            </header>
-
-            <script src="https://unpkg.com/react/umd/react.production.min.js" crossOrigin></script>
-
         </>
 
     );
-}
+
 
 }
 
-export default Navbar;

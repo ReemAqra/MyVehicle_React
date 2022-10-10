@@ -11,48 +11,118 @@
       font-size: 5px;
     }
     &_item {
-      @media (max-width: 768px) {
-        display: none;
+      @media screen and (max-width: 768px) {
+        position: relative;
+        ul{
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          position: absolute;
+          top: 8px;
+          left: -100%;
+          opacity: 1;
+          text-align: center;
+          transition: all 0.5s ease;
+
+        }
+        ul.active{
+          background-color:#3e5a6e ;
+          float: top;
+          left: 0;
+          opacity: 1;
+          transition: all 0.5s  ease;
+          z-index: 10000;
+        }
       }
       ul {
         li {
 
           &:hover {
+
             transition: 0.3s ease all;
             background: #557e7e;
             border-top-right-radius: 25px;
             border-bottom-left-radius: 25px;
           }
-
         }
       }
     }
 
+    &_btndiv.active{
+
+      float: top;
+      left: 0;
+      opacity: 1;
+      transition: all 0.5s  ease;
+      z-index: 1000;
+      margin-right: 2px;
+
+    }
+    &_btndiv{
+      @media (max-width: 768px) {
+        background-color: #3e5a6e;
+        position: absolute;
+        top: 210px;
+        padding: 15px;
+        justify-content: center;
+        //margin-left: 11px;
+       // margin-right: 11px;
+
+        width: 100%;
+
+
+        left: -100%;
+
+
+
+        text-align: center;
+        transition: all 0.5s ease;
+
+        flex-direction: row;
+        opacity: 1;
+
+
+      }
+
+    }
 
 
   }
 
   &_logo{
-    //font-family: serif;
     font-family: fantasy;
-    //font-size: 4rem ;
-    //font-weight: bold;
-    //text-decoration: none;
-    //color: #345165;
-
   }
 
 }
 ._header_toggle{
-   display: flex;
+  display: none;
+  @media screen and (max-width: 768px){
+    display: flex;
     position: absolute;
+    color: #dcd214;
     &:hover {
       color: rgba(71, 128, 183, 0.13);
     }
+  }
+
+}
+._header_content_btndiv{
+  z-index: 100;
+  @media (max-width: 768px) {
+    background-color: #3e5a6e;
+    position: absolute;
+    top: 80px;
+    padding: 2rem;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    transition: all 0.5s ease;
+
+  }
 }
 ._header_content_btn{
   @media (max-width: 768px) {
-    display: none;
+   position: relative;
   }
   text-decoration: none;
   color: #d6d8d9;
@@ -62,4 +132,11 @@
     background: #557e7e;
     color: #e5e8e8;
   }
+}
+
+@media (max-width: 768px) {
+  .active{
+
+  }
+  
 }
