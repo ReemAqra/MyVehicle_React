@@ -1,11 +1,14 @@
-import React, {Component, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Alert from "bootstrap/js/src/alert";
 import {motion} from "framer-motion";
-import {Link ,useNavigate} from "react-router-dom";
+import {Link, Outlet, useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Signin.css'
 import {UseAuth} from "../../context/AuthContext";
+import style from "./login.module.css";
+import car_logo from './../error/MM_Logo.jpeg'
 
+import Axios from 'axios'
 
 export default function  SignUp () {
     const [clicked_M,setclicked_M]=useState(false)
@@ -18,15 +21,13 @@ export default function  SignUp () {
     const [Loading,setLoading]=useState(false)
     const { signup }=UseAuth();
     const navigate =useNavigate();
-
-
+  
     function handleClick_M(){
-        setclicked_M(true)
+        setclicked_M(!clicked_M)
     }
     async function handleSubmit(e){
         //alert(`${username} ${email} ${phone} ${location} ${password} ${conformPassword}`)
          e.preventDefault()
-
           if(password !== conformPassword){
               return seterror("Password don't match")
           }
@@ -35,6 +36,20 @@ export default function  SignUp () {
             setLoading(true)
             await signup(email,password)
             navigate('./../account')
+            await Axios.post('http://localhost:3000/users',{
+                    email:email,
+                    phone:phone,
+                    location:location,
+    
+                }).then(function (response) {
+                    console.log(response);
+
+                  }) 
+                . catch ((err)=>{
+                    console.log(err);
+                }) 
+            
+           
 
         }catch (e){
             seterror(e.message)
@@ -43,6 +58,25 @@ export default function  SignUp () {
         setLoading( false)
 }
 
+useEffect(()=>{
+const SaveUserinfo=async(email,phone,location)=>{
+
+}
+},[])
+
+    const { login }=UseAuth();
+
+    const handleSubmitLogin=async (e)=>{
+        e.preventDefault()
+        seterror('')
+        try{
+            await login(email,password)
+            navigate('./../account')
+        }catch (e){
+            seterror(e.message)
+            console.log(e.message)
+        }
+    }
     return (
             <div>
                 <div className={`_containerForm`} >
@@ -51,16 +85,15 @@ export default function  SignUp () {
                             <form
                                 onSubmit={handleSubmit}
                                 className="_PersonalsignUpForm">
-                                <h2 className={`title`}>PersonalAccount</h2>
+                                <h2 className={`title`}>Login</h2>
+
                                 {error && <p variant="danger">{error}</p>}
 
                                 <div className={`border border-1 input_field`}>
                                     <i className="fas fa-envelope"></i>
-
                                     <input value={email}
                                            onChange={(e)=>setemail(e.target.value)}
                                            type="email" placeholder="name@example.com" required/>
-
                                 </div>
                                 <div className={`border border-1 input_field`}>
                                     <i className="fas fa-phone"></i>
@@ -74,9 +107,9 @@ export default function  SignUp () {
                                     <select  value={location}
                                              onChange={(e)=>setlocation(e.target.value)}
                                              className={'border border-0 w-100'}>
+                                        <option value='Al_Birah'>Al_Birah</option>
                                         <option value='Jerusalem'>Jerusalem</option>
                                         <option value='Jericho'>Jericho</option>
-                                        <option value='Al_Birah'>Al_Birah</option>
                                         <option value='Ramallah'>Ramallah</option>
                                         <option value='Hebron'>Hebron</option>
                                         <option value='Nablus'>Nablus</option>
@@ -85,8 +118,21 @@ export default function  SignUp () {
                                         <option value='Bethlehem'>Bethlehem</option>
                                         <option value='Jenin'>Jenin</option>
                                         <option value='Tubas'>Tubas</option>
+                                        <option value='AL-lyd'>AL-lyd</option>
+                                        <option value='AL-majdal'>AL-majdal</option>
+                                        <option value='AL-Nasra'>AL-Nasra</option>
+                                        <option value='Besan'>Besan</option>
+                                        <option value='Bir Al-Sabe`'>Bir Al-Sabe`</option>
+                                        <option value='Gaza'>Gaza</option>
+                                        <option value='Haifa'>Haifa</option>
+                                        <option value='Jaffa'>Jaffa</option>
+                                        <option value='khan Younis'>khan Younis</option>
+                                        <option value='Ramla'>Ramla</option>
+                                        <option value='Safad'>Safad</option>
+                                        <option value='Rafah'>Rafah</option>
+                                        <option value='Tabria'>Tabria</option>
+                                        <option value='Tobas'>Tobas</option>
                                     </select>
-
                                 </div>
                                 <div className={`border border-1 input_field`}>
                                     <i className="fas fa-lock"></i>
@@ -109,54 +155,40 @@ export default function  SignUp () {
                                 <p className="account_text">Already have an account?<Link to='./../login' id="sign_up_button2">Sign in</Link></p>
                             </form>
 
-                            <form className="_signInForm ">
-                                <h1 className={`title `}>Merchant Account</h1>
-                                <div className={"p-2 d-flex float-start "} >
-                                    <label className={"me-2"} htmlFor="ExhibitionName" >Exhibition Name</label>
-                                    <input type="text"  id="ExhibitionName" required/>
+                            <form
+                                onSubmit={handleSubmitLogin}
+                                  className={style.sign_in_form}>
+                                <h2 className={'title'}>sign Up</h2>
+                                {error && <Alert severity="error">{error}!</Alert>}
+                                <div className={style.input_field}>
+                                    <i className="fas fa-user"></i>
+                                    <input value={email}
+                                           onChange={(e)=>setemail(e.target.value)}
+                                           type="text" placeholder="email"/>
                                 </div>
-                                <div className={"p-2 d-flex float-start  "} >
-                                    <label className={"me-2"} htmlFor="ExhibitionNoid" >Exhibition No</label>
-                                    <input type="text"  id="ExhibitionNoid" required/>
-                                </div>
-                                <div className={"p-2"} >
-                                    <label className={"me-2"} htmlFor="ExhibitionNoid" >Sales Manager </label>
-                                    <input type="text"  id="SalesManagerNameid"
-                                           placeholder="Sales Manager Name" required/>
-                                </div>
-                                <div className={"p-2"} >
-                                    <label className={"me-2"} htmlFor="emailid" >Email </label>
-                                    <input type="email" id="emailid" placeholder="name@example.com" required/>
-                                </div>
-                                <div className={"p-2"} >
-                                    <label className={"me-2"} htmlFor="locationid" >location </label>
-                                    <input type="email"  id="locationid"
-                                           required/>
-                                </div>
-                                <div className={"p-2"} >
-                                    <label className={"me-2"} htmlFor="passwordid" >password</label>
-                                    <input type="password" id="passwordid" placeholder="password" required/>
-                                </div>
-                                <div className={"p-2"} >
-                                    <label htmlFor="conformPasswordid" >confirm password </label>
-                                    <input type="password"  id="conformPasswordid"
-                                           placeholder="confirm password"    required/>
+                                <div className={style.input_field}>
+                                    <i className="fas fa-lock"></i>
+                                    <input value={password}
+                                           onChange={(e)=>setpassword(e.target.value)}
+                                           type="password" placeholder="password"/>
                                 </div>
                                 <motion.button
                                     whileHover ={{scale:1.1}}
                                     whileTap={{scale:0.9}}
-                                    className={`_btn`} >Sign in
+                                    type='submit'
+                                    className={style.btn} >Login
                                 </motion.button>
-                                <p className="account_text ">Already have an account?
-                                    <Link className="p-2" to='./../login' id="sign_up_button2">Sign
-                                        in</Link>
+                                <p className="account_text">Don't have an account?
+                                    <Link to='./../Signin' id="sign_up_button2">Sign up</Link>
                                 </p>
-
+                                <Outlet />
                             </form>
                         </div>
                         <div className="_panelsContainer">
                             <div className={`_panel right_panel`}>
                                 <div className={`_content`}>
+                                    <img src={car_logo} width='100%' height='100%' className={'justify-content-center mb-2'} alt={'img'}/>
+
                                     <p className='fs-3' style={{fontFamily: 'fantasy'}}>New Here?</p>
                                     <p>
                                         Buy fast, sell fast.
@@ -166,13 +198,15 @@ export default function  SignUp () {
                                         whileHover ={{scale:1.1}}
                                         whileTap={{scale:0.9}}
                                         onClick={handleClick_M}
-                                        className={`_btN`} >Personal Account
+                                        className={`_btN`} >Sign up
 
                                     </motion.button>
                                 </div>
                             </div>
                             <div className={`_panel left_panel`}>
                                 <div className={`_content`}>
+                                    <img src={car_logo} width='100%' height='100%' className={'justify-content-center mb-2' } alt={'img'}/>
+
                                     <p className='fs-3' style={{fontFamily: 'fantasy'}}>One of us!</p>
                                     <p>
                                         Buy fast, sell fast.
@@ -182,17 +216,16 @@ export default function  SignUp () {
                                         whileHover ={{scale:1.1}}
                                         whileTap={{scale:0.9}}
                                         onClick={handleClick_M}
-                                        className={`_btN`} >Merchant Account</motion.button>
+                                        className={`_btN`} >sigm in</motion.button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         );
 
 }
 
-
+ 
 

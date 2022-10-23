@@ -1,5 +1,7 @@
 import React, {createContext,
     useContext, useEffect, useState} from "react";
+    import {set, ref, getDatabase,update} from "firebase/database";
+
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -11,9 +13,12 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({children}) => {
     const [user,setUser]=useState({})
+    let db = getDatabase();
 
     const signup = (email,password) => {
+    
         return createUserWithEmailAndPassword(auth,email,password)
+                
     };
     const login =(email,password)=>{
         return signInWithEmailAndPassword(auth,email,password)

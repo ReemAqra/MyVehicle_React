@@ -1,8 +1,9 @@
-import React, {Component, useState} from 'react';
+import React, { useState} from 'react';
 import style from './login.module.css'
 import {motion} from "framer-motion";
 import {UseAuth} from "../../context/AuthContext";
 import {Link, Outlet, useNavigate} from "react-router-dom";
+import Alert from '@mui/material/Alert';
 
 export default function Login(){
     const [email,setemail]=useState('')
@@ -27,10 +28,10 @@ export default function Login(){
                 <div className={style.container_form }>
                    <div className={style.container}>
                        <div className={style.signin_signup}>
-                           <form onSubmit={handleSubmitLogin}
-                               className={style.sign_in_form}>
-                               {error && <p variant="danger">{error}</p>}
+                           <form onSubmit={handleSubmitLogin} className={style.sign_in_form}>
+
                                <h2 className={style.title}>sign in</h2>
+                               {error && <Alert severity="error">{error}!</Alert>}
                                <div className={style.input_field}>
                                    <i className="fas fa-user"></i>
                                    <input value={email}
