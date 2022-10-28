@@ -14,6 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { Stepper } from 'react-form-stepper';
+import ImageUploading from "react-images-uploading";
 
 export default function Account (){
     const [value, setValue] = React.useState(0);
@@ -76,6 +77,13 @@ export default function Account (){
     ];
 
 
+    const [images, setImages] = React.useState([]);
+    const maxNumber = 69;
+    const onChange = (imageList, addUpdateIndex) => {
+        // data for submit
+        console.log(imageList, addUpdateIndex);
+        setImages(imageList);
+    };
     return (
         <>
             <div className='p-4 row pt-3 justify-content-center bg-secondary bg-opacity-10'>
@@ -86,13 +94,11 @@ export default function Account (){
                         </div>
                      <div className="card-body justify-content-start d-grid">
                          <p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#4d636f"}}><IoMail /></i>{user && user.email}</p>
-                         <p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#4d636f"}}><IoLocationSharp /></i>{(userdata.loaction)} </p>
-                         <p className='fs-5 text-start '><i className="me-3 fs-5" style={{color: "#4d636f"}}><AiFillPhone /></i>  {JSON.stringify(userdata.phone)}</p>
+                         <p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#4d636f"}}><IoLocationSharp /></i>{ userdata.loaction}</p>
+                         <p className='fs-5 text-start '><i className="me-3 fs-5" style={{color: "#4d636f"}}><AiFillPhone /></i>  {JSON.stringify(userdata.phone )}</p>
                      </div>
 
-
                      <button className='mb-4 border-0 bg-warning  text-center d-flex justify-content-center' onClick={handleLogout} >Log out</button>
-
                  </div>
                  <div className='card mt-3 shadow rounded-0 container border-0 text-center's>
                      <Tabs
@@ -110,33 +116,59 @@ export default function Account (){
                      </Tabs>
                  </div>
                </div>
-             <div className='col-md-8 pt-3 ps-5 '>
-                 <div className='card shadow'>
-                     <TabPanel value={value} index={0}>
-                        my Post
-                     </TabPanel>
-                     <TabPanel value={value} index={1}>
-                         <AddVehicles />
-                     </TabPanel>
-                     <TabPanel value={value} index={2}>
-                         <Stepper activeStep={1}>
-                             <Step label="Children Step 1" />
-                             <Step label="Children Step 2" />
-                             <Step label="Children Step 3" />
-                         </Stepper>
-                     </TabPanel>
-                     <TabPanel value={value} index={3}>
-                         Item Four
-                     </TabPanel>
+                <div className='col-md-8 pt-3 ps-5 '>
+                    <div className='card shadow'>
+                        <TabPanel value={value} index={0}>
+                            my Post
+                        </TabPanel>
+                        <TabPanel value={value} index={1}>
+                            <AddVehicles />
+                        </TabPanel>
 
-                 </div>
+                        <TabPanel value={value} index={2}>
+                            <Box className="App">
+                                <ImageUploading multiple
+                                                value={images}
+                                                onChange={onChange}
+                                                maxNumber={maxNumber}
+                                                dataURLKey="data_url"
+                                                acceptType={["jpg"]}>
+                                    {({
+                                          imageList, onImageUpload,
+                                          onImageRemoveAll, onImageUpdate,
+                                          onImageRemove, isDragging, dragProps
+                                      }) => (
+                                        // write your building UI
+                                        <Box className="upload__image-wrapper">
+                                            <button style={isDragging ? { color: "red" } : null}
+                                                    onClick={onImageUpload}
+                                                    {...dragProps}>
+                                                Click or Drop here
+                                            </button>
+                                            &nbsp;
+                                            <button onClick={onImageRemoveAll}>Remove all images</button>
+                                            {imageList.map((image, index) => (
+                                                <Box key={index} className="image-item">
+                                                    <img src={image.data_url} alt="" width="100" />
+                                                    <Box className="image-item__btn-wrapper">
+                                                        <button onClick={() => onImageUpdate(index)}>Update</button>
+                                                        <button onClick={() => onImageRemove(index)}>Remove</button>
+                                                    </Box>
+                                                </Box>
+                                            ))}
+                                        </Box>
+                                    )}
+                                </ImageUploading>
+                            </Box>
+                        </TabPanel>
 
-             </div>
-             
+                        <TabPanel value={value} index={3}>
+                            Item Four
+                        </TabPanel>
+                    </div>
+                </div>
             </div>
-
-            </>
-        );
-
+        </>
+    );
 }
 

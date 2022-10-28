@@ -1,23 +1,28 @@
 import React, {createContext,
     useContext, useEffect, useState} from "react";
     import {set, ref, getDatabase,update} from "firebase/database";
-
+import {collection ,getDocs,setDoc,doc} from 'firebase/firestore'
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged
 } from 'firebase/auth'
-import {auth} from "../FireDB";
+import {auth, db} from "../FireDB";
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({children}) => {
     const [user,setUser]=useState({})
-    let db = getDatabase();
 
-    const signup = (email,password) => {
-    
-        return createUserWithEmailAndPassword(auth,email,password)
+
+    const signup =  (email,password) => {
+        return createUserWithEmailAndPassword(auth,email,password).then(async(res )=>{
+            // await setDoc(doc(db, "cities", "LA"), {
+            //     name: "Los Angeles",
+            //     state: "CA",
+            //     country: "USA"
+            // });
+        })
                 
     };
     const login =(email,password)=>{
