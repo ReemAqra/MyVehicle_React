@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {UseAuth} from "../../context/AuthContext";
 import {useNavigate} from "react-router-dom";
 import axios from 'axios';
+import {motion} from "framer-motion";
+
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import { IoLocationSharp ,IoMail } from 'react-icons/io5';
 import { AiFillPhone } from 'react-icons/ai';
@@ -15,9 +17,15 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { Stepper } from 'react-form-stepper';
 import ImageUploading from "react-images-uploading";
+import {CCard ,CButton, CCardBody, CCollapse} from "@coreui/react";
+import {ButtonGroup} from "@mui/material";
 
 export default function Account (){
     const [value, setValue] = React.useState(0);
+    const [visible, setVisible] = useState(false)
+    const [visible_Vehicle, setvisible_Vehicle] = useState(false)
+    const [visible_acc, setvisible_acc] = useState(false)
+
     const {user,logout}=UseAuth();
     const [userdata,setuserdata]=useState('')
     const Navigate =useNavigate();
@@ -70,12 +78,6 @@ export default function Account (){
             console.log(e.message)
         }
     }
-    const steps = [
-        'Select master blaster campaign settings',
-        'Create an ad group',
-        'Create an ad',
-    ];
-
 
     const [images, setImages] = React.useState([]);
     const maxNumber = 69;
@@ -109,9 +111,9 @@ export default function Account (){
                          aria-label="Vertical tabs example"
                          sx={{ borderRight: 1, borderColor: 'divider' }}
                      >
-                         <Tab label="My post" {...a11yProps(0)} />
-                         <Tab label="Item Two" {...a11yProps(1)} />
-                         <Tab label="Item Three" {...a11yProps(2)} />
+                         <Tab label="My Ads" {...a11yProps(0)} />
+                         <Tab label="add an Ad" {...a11yProps(1)} />
+                         <Tab label="My Favorite" {...a11yProps(2)} />
 
                      </Tabs>
                  </div>
@@ -119,10 +121,46 @@ export default function Account (){
                 <div className='col-md-8 pt-3 ps-5 '>
                     <div className='card shadow'>
                         <TabPanel value={value} index={0}>
-                            my Post
+                            <AddVehicles />
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            <AddVehicles />
+                            <div style={{fontFamily:'fantasy', textDecorationColor:'#3e5a6e'}}   className='justify-content-center d-flex p-3  '>
+                                <motion.button
+                                    style={{color:'#1c2531'}}
+                                    className=' w-50 pt-2 pe-5  border-0'
+                                    whileHover ={{scale:1.01}}
+                                    whileTap={{scale:0.9}}
+                                    onClick={(event) => {
+                                    event.preventDefault()
+                                    setvisible_Vehicle(!visible_Vehicle)
+                                        setvisible_acc(visible_Vehicle)
+                                }}>Vehicles</motion.button>
+                                <motion.button
+                                    className='border-0 pt-2 pe-5 w-50 border-raduis-4 '
+                                    whileHover ={{scale:1.01}}
+                                    whileTap={{scale:0.9}}
+                                    onClick={() => {
+                                        setvisible_acc(!visible_acc)
+                                        setvisible_Vehicle(visible_acc)
+                                    }
+                                }>accessories</motion.button>
+
+                            </div>
+
+                                <CCollapse visible={visible_Vehicle} className='card p-3'>
+                                    <AddVehicles />
+                                </CCollapse>
+                                <CCollapse visible={visible_acc} className='card p-3'>
+                                    <Typography
+                                        fontSize='40px'
+                                        color= '#3e5a6e'
+                                        align="center"
+                                        variant= "h6"
+                                        fontFamily='fantasy'>
+                                        New accessories ad
+                                    </Typography>
+                                </CCollapse>
+
                         </TabPanel>
 
                         <TabPanel value={value} index={2}>

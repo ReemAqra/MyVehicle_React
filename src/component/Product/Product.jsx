@@ -43,22 +43,8 @@ class Product extends Component {
                                 <p>Price: {product.Price}</p>
                                 <p>Model: {product.Model}</p>
                             </div>
-
                         )}
-
                     </div>
-                    <div>
-                        <Stepper   alternativeLabel activeStep={1} >
-                            {stepperStep.map((item,i) => (
-                                <Step key={i}>
-                                    <StepLabel className='w-100' >{item.label}</StepLabel>
-                                </Step>
-                            ))}
-                        </Stepper>
-                    </div>
-
-
-
                 </div>
             </>
         );
