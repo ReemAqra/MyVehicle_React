@@ -13,12 +13,9 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import AddVehicles from "./addVehicles";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import { Stepper } from 'react-form-stepper';
+
 import ImageUploading from "react-images-uploading";
 import {CCard ,CButton, CCardBody, CCollapse} from "@coreui/react";
-import {ButtonGroup} from "@mui/material";
 
 export default function Account (){
     const [value, setValue] = React.useState(0);
@@ -82,7 +79,6 @@ export default function Account (){
     const [images, setImages] = React.useState([]);
     const maxNumber = 69;
     const onChange = (imageList, addUpdateIndex) => {
-        // data for submit
         console.log(imageList, addUpdateIndex);
         setImages(imageList);
     };
@@ -94,34 +90,25 @@ export default function Account (){
                         <div className="card-header bg-white">
                             <i className="fs-1 p-2" style={{color :'#3e5a6e'}}><IoPersonCircleOutline /></i>
                         </div>
-                     <div className="card-body justify-content-start d-grid">
-                         <p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#4d636f"}}><IoMail /></i>{user && user.email}</p>
-                         <p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#4d636f"}}><IoLocationSharp /></i>{ userdata.loaction}</p>
-                         <p className='fs-5 text-start '><i className="me-3 fs-5" style={{color: "#4d636f"}}><AiFillPhone /></i>  {JSON.stringify(userdata.phone )}</p>
-                     </div>
-
-                     <button className='mb-4 border-0 bg-warning  text-center d-flex justify-content-center' onClick={handleLogout} >Log out</button>
-                 </div>
-                 <div className='card mt-3 shadow rounded-0 container border-0 text-center's>
-                     <Tabs
-                         orientation="vertical"
-                         variant="scrollable"
-                         value={value}
-                         onChange={handleChange}
-                         aria-label="Vertical tabs example"
-                         sx={{ borderRight: 1, borderColor: 'divider' }}
-                     >
-                         <Tab label="My Ads" {...a11yProps(0)} />
-                         <Tab label="add an Ad" {...a11yProps(1)} />
-                         <Tab label="My Favorite" {...a11yProps(2)} />
-
-                     </Tabs>
-                 </div>
-               </div>
+                        <div className="card-body justify-content-start d-grid">
+                            <p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#4d636f"}}><IoMail /></i>{user && user.email}</p>
+                            <p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#4d636f"}}><IoLocationSharp /></i>{ userdata.loaction}</p>
+                            <p className='fs-5 text-start '><i className="me-3 fs-5" style={{color: "#4d636f"}}><AiFillPhone /></i>  {JSON.stringify(userdata.phone )}</p>
+                        </div>
+                        <button className='mb-4 border-0 bg-warning  text-center d-flex justify-content-center' onClick={handleLogout} >Log out</button>
+                    </div>
+                    <div className='card mt-3 shadow rounded-0 container border-0 text-center's>
+                        <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} aria-label="Vertical tabs example" sx={{ borderRight: 1, borderColor: 'divider' }}>
+                            <Tab label="My Ads" {...a11yProps(0)} />
+                            <Tab label="add an Ad" {...a11yProps(1)} />
+                            <Tab label="My Favorite" {...a11yProps(2)} />
+                        </Tabs>
+                    </div>
+                </div>
                 <div className='col-md-8 pt-3 ps-5 '>
                     <div className='card shadow'>
                         <TabPanel value={value} index={0}>
-                            <AddVehicles />
+                            My Post
                         </TabPanel>
                         <TabPanel value={value} index={1}>
                             <div style={{fontFamily:'fantasy', textDecorationColor:'#3e5a6e'}}   className='justify-content-center d-flex p-3  '>
@@ -146,11 +133,10 @@ export default function Account (){
                                 }>accessories</motion.button>
 
                             </div>
-
-                                <CCollapse visible={visible_Vehicle} className='card p-3'>
+                            <CCollapse visible={visible_Vehicle} className='card p-3'>
                                     <AddVehicles />
-                                </CCollapse>
-                                <CCollapse visible={visible_acc} className='card p-3'>
+                            </CCollapse>
+                            <CCollapse visible={visible_acc} className='card p-3'>
                                     <Typography
                                         fontSize='40px'
                                         color= '#3e5a6e'
@@ -160,9 +146,7 @@ export default function Account (){
                                         New accessories ad
                                     </Typography>
                                 </CCollapse>
-
                         </TabPanel>
-
                         <TabPanel value={value} index={2}>
                             <Box className="App">
                                 <ImageUploading multiple
@@ -199,7 +183,6 @@ export default function Account (){
                                 </ImageUploading>
                             </Box>
                         </TabPanel>
-
                         <TabPanel value={value} index={3}>
                             Item Four
                         </TabPanel>

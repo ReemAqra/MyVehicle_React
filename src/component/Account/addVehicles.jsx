@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FilledInput, FormControl, Grid, InputAdornment, InputLabel, Select, Stack, TextField} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Stepper from '@mui/material/Stepper';
@@ -65,7 +65,7 @@ export default function AddVehicles () {
         e.preventDefault()
 
         try {
-           await Axios.post('http://localhost:30000/vehicles',{
+           await Axios.post('http://localhost:3000/vehicles',{
 
                vehicleModel: vehicleModel,
                vehicleFuel:vehiclefual,
@@ -92,11 +92,10 @@ export default function AddVehicles () {
             seterror(e.message)
             console.log(e.message)
         }
-
-
-
-
     }
+    useEffect(()=>{
+
+    },[])
     const renderText =({label,color,align,variant,fontSize,value})=> {
        return( <Typography
                fontSize={fontSize ? fontSize:'20px'}
