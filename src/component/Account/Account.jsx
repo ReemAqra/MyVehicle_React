@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {UseAuth} from "../../context/AuthContext";
 import {useNavigate} from "react-router-dom";
 import axios from 'axios';
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import "./account.Model.css";
 
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import { IoLocationSharp ,IoMail } from 'react-icons/io5';
@@ -12,14 +14,17 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import AddVehicles from "./addVehicles";
+import AddAccessories from "./addAccessories";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ImageUploading from "react-images-uploading";
-import {CCard ,CButton, CCardBody, CCollapse} from "@coreui/react";
+import { CCollapse} from "@coreui/react";
+
+
+
 
 export default function Account (){
     const [value, setValue] = React.useState(0);
-    const [visible, setVisible] = useState(false)
     const [visible_Vehicle, setvisible_Vehicle] = useState(false)
     const [visible_acc, setvisible_acc] = useState(false)
 
@@ -28,8 +33,20 @@ export default function Account (){
     const Navigate =useNavigate();
     const emaill = user.email
 
+     const allIngredients = [
+        { icon: "🚘", label: "New Vehicle ad" ,contact: <AddVehicles /> },
+        { icon: "⚙️️", label: "New accessories ad",contact: <AddAccessories />},
+    ];
+
+    const [tomato, lettuce] = allIngredients;
+     const initialTabs = [tomato, lettuce];
+    const [selectedTab, setSelectedTab] = useState(initialTabs[0]);
+
+
+
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
+
 
         return (
             <div
@@ -85,7 +102,7 @@ export default function Account (){
     return (
         <>
             <div className='p-4 row pt-3 justify-content-center bg-secondary bg-opacity-10'>
-                <div className='col-md-4 pt-3 ps-5   '>
+                <div className='col-md-4 pt-3 ps-5 '>
                     <div className='card shadow rounded-0 container border-0 text-center'>
                         <div className="card-header bg-white">
                             <i className="fs-1 p-2" style={{color :'#3e5a6e'}}><IoPersonCircleOutline /></i>
@@ -105,12 +122,44 @@ export default function Account (){
                         </Tabs>
                     </div>
                 </div>
-                <div className='col-md-8 pt-3 ps-5 '>
+                <div className='col-md-8  ps-5 '>
                     <div className='card shadow'>
                         <TabPanel value={value} index={0}>
                             My Post
                         </TabPanel>
                         <TabPanel value={value} index={1}>
+                            <div className="window">
+                                <nav className={"navadd"}>
+                                    <ul className={"uladd"}>
+                                        {initialTabs.map((item) => (
+                                            <li
+                                                key={item.label}
+                                                className={item === selectedTab ? `liadd selected ` : `liadd selected `}
+                                                onClick={() => setSelectedTab(item)}
+                                            >
+                                                {`${item.icon} ${item.label}`}
+                                                {item === selectedTab ? (
+                                                    <motion.div className="underline" layoutId="underline" />
+                                                ) : null}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </nav>
+                                <main>
+                                    <AnimatePresence exitBeforeEnter>
+                                        <motion.div key={selectedTab ? selectedTab.label : "empty"}
+                                                    initial={{ y: 10, opacity: 0 }}
+                                                    animate={{ y: 0, opacity: 1 }}
+                                                    exit={{ y: -10, opacity: 0 }}
+                                                    transition={{ duration: 0.2 }}
+                                        >
+                                            {selectedTab ? selectedTab.contact : "😋"}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </main>
+                            </div>
+                        </TabPanel>
+                        <TabPanel value={value} index={2}>
                             <div style={{fontFamily:'fantasy', textDecorationColor:'#3e5a6e'}}   className='justify-content-center d-flex p-3  '>
                                 <motion.button
                                     style={{color:'#1c2531'}}
@@ -147,7 +196,9 @@ export default function Account (){
                                     </Typography>
                                 </CCollapse>
                         </TabPanel>
-                        <TabPanel value={value} index={2}>
+                        <TabPanel value={value} index={3}>
+                            Item Four
+
                             <Box className="App">
                                 <ImageUploading multiple
                                                 value={images}
@@ -182,9 +233,6 @@ export default function Account (){
                                     )}
                                 </ImageUploading>
                             </Box>
-                        </TabPanel>
-                        <TabPanel value={value} index={3}>
-                            Item Four
                         </TabPanel>
                     </div>
                 </div>

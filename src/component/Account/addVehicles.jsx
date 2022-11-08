@@ -9,15 +9,12 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Box from "@mui/material/Box";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import IconButton from "@mui/material/IconButton";
-import {PhotoCamera, Power} from "@mui/icons-material";
+import {PhotoCamera} from "@mui/icons-material";
 import ImageUploading from 'react-images-uploading';
-import { alpha, styled } from '@mui/material/styles';
 import MenuItem from "@mui/material/MenuItem";
-import {DatePicker, DesktopDatePicker, LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
+import {DatePicker, LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import {motion} from "framer-motion";
 import Alert from "@mui/material/Alert";
 import Axios from 'axios'
 import {AiFillDelete} from 'react-icons/ai'
@@ -45,7 +42,6 @@ export default function AddVehicles () {
     const [currentstep,setcurrentstep]=useState(0)
     const maxNumber =5;
     const navigate =useNavigate();
-
 
     const useStyles = makeStyles(() => ({
         root: {
@@ -119,11 +115,29 @@ export default function AddVehicles () {
             </Button>
         )
     }
+    const onChange = (imageList, addUpdateIndex) => {
+
+        console.log(imageList, addUpdateIndex);
+        setImages(imageList);
+    };
+    const getStepitem = (steps)=>{
+        switch (steps){
+            case 0:return step1();
+            case 1:return step2();
+            case 2:return step3();
+            case 3:return Finished();
+        }
+    }
+    const stepperStep =[
+        {label:''},
+        {label:''},
+        {label:''},
+    ]
 
     const step1= ()=>{
         return(
             <>
-                <Box className={'w-100'}>
+                <Box className={'w-100 mt-5'}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={4}>
                             <FormControl color={"warning"} size={"small"} variant="filled" sx={{ minWidth: '100%' }}>
@@ -267,8 +281,6 @@ export default function AddVehicles () {
                                 </Stack>
                             </LocalizationProvider>
                         </Grid>
-
-
                     </Grid>
                 </Box>
                 <Box className='w-100'  minHeight='50px'>
@@ -292,13 +304,6 @@ export default function AddVehicles () {
             </>
         )
     }
-
-    const onChange = (imageList, addUpdateIndex) => {
-
-        console.log(imageList, addUpdateIndex);
-        setImages(imageList);
-    };
-
     const step2= ()=>{
         return(
             <>
@@ -459,8 +464,7 @@ export default function AddVehicles () {
         return(
             <>
                 <Box mt={2} mb={2}>
-                    {renderText({
-                        label: "Finished"})}
+                    {renderText({label: "Finished"})}
                     <Typography>vehicleModel: {vehicleModel}</Typography>
                     <Typography>vehiclefual: {vehiclefual}</Typography>
                     <Typography>Gear: {Gear}</Typography>
@@ -487,23 +491,10 @@ export default function AddVehicles () {
                         <Grid item justifyContent={'flex-end'} >{renderButton({lable:"share",hanbleOnClick:handleshare})}</Grid>
                     </Grid>
                 </Box>
-
             </>
         )
     }
-    const getStepitem = (steps)=>{
-        switch (steps){
-            case 0:return step1();
-            case 1:return step2();
-            case 2:return step3();
-            case 3:return Finished();
-        }
-    }
-    const stepperStep =[
-        {label:''},
-        {label:''},
-        {label:''},
-    ]
+
     return (
            <>
                <Grid container className={' w-100   h-100 justify-content-center align-items-center'}>
@@ -534,7 +525,6 @@ export default function AddVehicles () {
                </Grid>
                <form className={'top-0 d-flex mt-3 mb-3'}  style={{minHeight:"350px" ,minWidth:'100%'}}>
                    {error && <Alert className={'mb-2 w-100'}  severity="error">{error} —— check it out!</Alert>}
-
                    {getStepitem(currentstep)}
                </form>
            </>
