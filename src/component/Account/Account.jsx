@@ -1,27 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import {UseAuth} from "../../context/AuthContext";
 import {useNavigate} from "react-router-dom";
-import axios from 'axios';
-import {AnimatePresence, motion} from "framer-motion";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import "./account.Model.css";
-
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import { IoLocationSharp ,IoMail } from 'react-icons/io5';
 import { AiFillPhone } from 'react-icons/ai';
+import {AnimatePresence, motion} from "framer-motion";
+import ImageUploading from "react-images-uploading";
+import { CCollapse} from "@coreui/react";
+import Typography from '@mui/material/Typography';
+import axios from 'axios';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import AddVehicles from "./addVehicles";
 import AddAccessories from "./addAccessories";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import ImageUploading from "react-images-uploading";
-import { CCollapse} from "@coreui/react";
-
-
-
+import "./account.Model.css";
 
 export default function Account (){
     const [value, setValue] = React.useState(0);
@@ -37,17 +31,23 @@ export default function Account (){
         { icon: "🚘", label: "New Vehicle ad" ,contact: <AddVehicles /> },
         { icon: "⚙️️", label: "New accessories ad",contact: <AddAccessories />},
     ];
-
     const [tomato, lettuce] = allIngredients;
-     const initialTabs = [tomato, lettuce];
+    const initialTabs = [tomato, lettuce];
     const [selectedTab, setSelectedTab] = useState(initialTabs[0]);
+
+
+    const allIngredients_F = [
+        { icon: "❤  ", label: " Vehicle " ,contact: <AddVehicles /> },
+        { icon: "❤  ", label: " accessories ",contact: <AddAccessories />},
+    ];
+    const [Accessories, vehicle] = allIngredients_F;
+    const initialTabs_F = [Accessories, vehicle];
+    const [selectedTab_f, setSelectedTab_f] = useState(initialTabs_F[0]);
 
 
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
-
-
         return (
             <div
                 role="tabpanel"
@@ -160,41 +160,37 @@ export default function Account (){
                             </div>
                         </TabPanel>
                         <TabPanel value={value} index={2}>
-                            <div style={{fontFamily:'fantasy', textDecorationColor:'#3e5a6e'}}   className='justify-content-center d-flex p-3  '>
-                                <motion.button
-                                    style={{color:'#1c2531'}}
-                                    className=' w-50 pt-2 pe-5  border-0'
-                                    whileHover ={{scale:1.01}}
-                                    whileTap={{scale:0.9}}
-                                    onClick={(event) => {
-                                    event.preventDefault()
-                                    setvisible_Vehicle(!visible_Vehicle)
-                                        setvisible_acc(visible_Vehicle)
-                                }}>Vehicles</motion.button>
-                                <motion.button
-                                    className='border-0 pt-2 pe-5 w-50 border-raduis-4 '
-                                    whileHover ={{scale:1.01}}
-                                    whileTap={{scale:0.9}}
-                                    onClick={() => {
-                                        setvisible_acc(!visible_acc)
-                                        setvisible_Vehicle(visible_acc)
-                                    }
-                                }>accessories</motion.button>
-
+                            <div className="window">
+                                <nav className={"navadd"}>
+                                    <ul className={"uladd"}>
+                                        {initialTabs_F.map((item) => (
+                                            <li
+                                                key={item.label}
+                                                className={item === selectedTab_f ? `liadd selected ` : `liadd selected `}
+                                                onClick={() => setSelectedTab_f(item)}
+                                            >
+                                                {`${item.icon} ${item.label}`}
+                                                {item === selectedTab_f ? (
+                                                    <motion.div className="underline" layoutId="underline" />
+                                                ) : null}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </nav>
+                                <main>
+                                    <AnimatePresence exitBeforeEnter>
+                                        <motion.div key={selectedTab_f ? selectedTab_f.label : "empty"}
+                                                    initial={{ y: 10, opacity: 0 }}
+                                                    animate={{ y: 0, opacity: 1 }}
+                                                    exit={{ y: -10, opacity: 0 }}
+                                                    transition={{ duration: 0.2 }}
+                                        >
+                                            {selectedTab_f ? selectedTab_f.icon : "😋"}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </main>
                             </div>
-                            <CCollapse visible={visible_Vehicle} className='card p-3'>
-                                    <AddVehicles />
-                            </CCollapse>
-                            <CCollapse visible={visible_acc} className='card p-3'>
-                                    <Typography
-                                        fontSize='40px'
-                                        color= '#3e5a6e'
-                                        align="center"
-                                        variant= "h6"
-                                        fontFamily='fantasy'>
-                                        New accessories ad
-                                    </Typography>
-                                </CCollapse>
+
                         </TabPanel>
                         <TabPanel value={value} index={3}>
                             Item Four
