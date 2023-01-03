@@ -15,10 +15,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import {BiLogOutCircle} from "react-icons/bi";
 import {AiOutlineSetting} from "react-icons/ai";
+import {useTranslation} from "react-i18next";
+import Button from "@mui/material/Button";
 
 
 export default function Navbar() {
-const [clicked,setclicked]=useState(false)
+    const { t, i18n } = useTranslation();
+
+    const [clicked,setclicked]=useState(false)
     const { user,logout } =UseAuth();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const Navigate =useNavigate();
@@ -76,12 +80,18 @@ const [clicked,setclicked]=useState(false)
                         </div>
                         {!user ?
                         <div className={clicked ? "_header_contant_btndiv active" : "_header_contant_btndiv"}>
+                            { i18n.language == 'en' && <Button onClick={()=>{i18n.changeLanguage('ar')}}>AR</Button>}
+                            {i18n.language == 'ar' &&  <Button onClick={()=>{i18n.changeLanguage('en')}}>EN</Button>}
+
                             <Link
                                 className="_header_content_btn  border border-1 ps-2 pe-2 p-1  me-3" to="Signup">SIGNIN
                             </Link>
+
                         </div>
                             :
                             <>
+                            { i18n.language == 'en' && <Button onClick={()=>{i18n.changeLanguage('ar')}}>AR</Button>}
+                                {i18n.language == 'ar' &&  <Button onClick={()=>{i18n.changeLanguage('en')}}>EN</Button>}
                                 <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                                     <Tooltip title="Account settings">
                                         <IconButton

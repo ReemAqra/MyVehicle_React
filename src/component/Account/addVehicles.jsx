@@ -18,8 +18,10 @@ import dayjs from "dayjs";
 import Alert from "@mui/material/Alert";
 import Axios from 'axios'
 import {AiFillDelete} from 'react-icons/ai'
-import {GrDocumentUpdate} from 'react-icons/gr'
+import {GrDocumentUpdate, GrUpdate} from 'react-icons/gr'
 import {useNavigate} from "react-router-dom";
+import LinearProgress from "@mui/material/LinearProgress";
+import './accessories.Model.css'
 
 export default function AddVehicles () {
 
@@ -40,6 +42,10 @@ export default function AddVehicles () {
 
     const [error,seterror]=useState('')
     const [currentstep,setcurrentstep]=useState(0)
+    const [index,setindex]=useState(0)
+    const [prog,setprog]=useState(0)
+    const [activeimg,setactiveimge] = React.useState(null)
+
     const maxNumber =5;
     const navigate =useNavigate();
 
@@ -133,6 +139,15 @@ export default function AddVehicles () {
         {label:''},
         {label:''},
     ]
+    const handletab=(index)=>{
+        setindex(index)
+        setactiveimge(images[index])
+    }
+    const handleactivetabs=(index)=>{
+        if(images[index] ===activeimg){
+            return 'active'
+        }else {return 'imge'}
+    }
 
     const step1= ()=>{
         return(
@@ -430,8 +445,8 @@ export default function AddVehicles () {
                             // write your building UI
                             <Box  minWidth={'100%'}>
                                 <Button  style={isDragging ? { color: "red" } :
-                                    { backgroundColor:'#d3d9dc',minWidth:'350px',minHeight:'80px',
-                                    border:'3px dashed white',color:'#3e5a6e'}}
+                                    { backgroundColor:'#d3d9dc',minWidth:'350px',minHeight:'70px',
+                                    border:'3px dashed white',color:'#3e5a6e',marginBottom:'20px'}}
                                         onClick={onImageUpload}
                                         {...dragProps}>
                                     <PhotoCamera  style={{color:'#3e5a6e'}}  />
@@ -439,11 +454,19 @@ export default function AddVehicles () {
                                 &nbsp;
                                 {/*<Button onClick={onImageRemoveAll}>Remove all images</Button>*/}
                                 {imageList.map((image, index) => (
-                                    <Box xs={12} sm={3} p={2} key={index} className="d-flex ">
-                                        <img src={image.data_url} alt="" width="100" />
-                                        <Box m={1}   className="image-item__btn-wrapper">
-                                            <Button m={1} variant="contained" color="warning"   onClick={() => onImageUpdate(index)}><GrDocumentUpdate /></Button>
-                                            <Button m={1} variant="contained" color="warning"  onClick={() => onImageRemove(index)}><AiFillDelete /></Button>
+                                    <Box style={{borderRadius:'7px'}}  bgcolor={'#3e5a6e'}  xs={12}  sm={3} p={0} key={index} className="d-flex border border-1 ">
+                                        <img   src={image.data_url} alt="" width="50" style={{borderRadius:'7px',justifyContent:"right"}} />
+                                        <Box m={1} margin={"auto"} className="image-item__btn-wrapper">
+                                            <Button m={1}  variant="contained" c  style={{color:'white',borderColor:'gray',background:'gray',
+                                                marginRight: '18px'
+                                            }} onClick={() => onImageUpdate(index)}>
+                                                <i className={'me-2'} style={{color:"white"}}><GrUpdate /></i>Update
+                                            </Button>
+                                            <Button m={1} variant="contained" style={{color:'white',borderColor:'gray',background:'gray',
+                                                marginRight: '18px'
+                                            }} onClick={() => onImageRemove(index)}>
+                                                <i className={'me-2'}><AiFillDelete /></i>Delete
+                                            </Button>
                                         </Box>
                                     </Box>
                                 ))}
@@ -464,32 +487,86 @@ export default function AddVehicles () {
         return(
             <>
                 <Box mt={2} mb={2}>
-                    {renderText({label: "Finished"})}
-                    <Typography>vehicleModel: {vehicleModel}</Typography>
-                    <Typography>vehiclefual: {vehiclefual}</Typography>
-                    <Typography>Gear: {Gear}</Typography>
-                    <Typography>Model Year: {JSON.stringify(ModelYear)}</Typography>
-                    <Typography>vehiclePower: {vehiclePower}</Typography>
-                    <Typography>vehicle Mileage: {vehicleMileage}</Typography>
-                    <Typography>vehicle Body Color : {vehicleBodyColor}</Typography>
-                    <Typography>License Expiry Date: {JSON.stringify(LicenseExpiryDate)}</Typography>
-                    <Typography>selling Method: {sellingMethod}</Typography>
-                    <Typography>vehiclePrice: {vehiclePrice}</Typography>
-                    <Typography>Loaction :{vehicleLocation}</Typography>
-                    <Typography>Description :{Description}</Typography>
-                    {images.map((image ,index) => (
-                        <Box sx={2} key={index}>
-                            <img src={image.data_url} alt="" width="100" />
+                    {/*{renderText({label: "Finished"})}*/}
 
-                        </Box>
-                        ))
-                    }
+                    <Grid container spacing={2} width={'100%'}>
+                        <Grid item xs={12} sm={6}>
+                            <Grid minHeight={'300px'}  container m={0} spacing={4} xs={12}>
+                                <img src={images[index].data_url} alt="" height='400px' width="100%" />
+                            </Grid>
+                            <Grid container m={0}  justifyContent={"center"} spacing={4} xs={12} >
+                                {images.map((image ,index) => (
+                                    <Box className={`Box`} sx={2}  key={index}>
+                                        <img className={handleactivetabs(index)} src={image.data_url}
+                                             onClick={()=>{handletab(index)}}
+                                             alt="" width="74" height='70'
+                                        />
+                                    </Box>
+                                ))
+                                }
+                            </Grid>
+
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}> <Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}> Model: </Typography></Grid>
+                                <Grid item xs={6}> <Typography>{vehicleModel}</Typography></Grid>
+                            </Grid>
+
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}> Fuel: </Typography></Grid>
+                                <Grid item xs={6}> <Typography>{vehiclefual}</Typography></Grid>
+                            </Grid>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Gear: </Typography></Grid>
+                                <Grid item xs={6}> <Typography>{Gear}</Typography></Grid>
+                            </Grid>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Year of release:</Typography></Grid>
+                                <Grid item xs={6}> <Typography>{JSON.stringify(ModelYear)}</Typography></Grid>
+                            </Grid>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Power:</Typography></Grid>
+                                <Grid item xs={6}> <Typography>{vehiclePower} CC</Typography></Grid>
+                            </Grid>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}> Mileage: </Typography></Grid>
+                                <Grid item xs={6}> <Typography>{vehicleMileage} KM</Typography></Grid>
+                            </Grid>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Body Color : </Typography></Grid>
+                                <Grid item xs={6}> <Typography>{vehicleBodyColor}</Typography></Grid>
+                            </Grid>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>License Expiry Date:</Typography></Grid>
+                                <Grid item xs={6}> <Typography>{JSON.stringify(LicenseExpiryDate)}</Typography></Grid>
+                            </Grid>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>selling Method:</Typography></Grid>
+                                <Grid item xs={6}> <Typography>{sellingMethod}</Typography></Grid>
+                            </Grid>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Price:</Typography></Grid>
+                                <Grid item xs={6}> <Typography>{vehiclePrice}</Typography></Grid>
+                            </Grid>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Loaction:</Typography></Grid>
+                                <Grid item xs={6}> <Typography>{vehicleLocation}</Typography></Grid>
+                            </Grid>
+                            <Grid  container spacing={2} xs={12}>
+                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Description:</Typography></Grid>
+                                <Grid item xs={6}> <Typography>{Description}</Typography></Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
                 </Box>
                 <Box className='w-100' minHeight='50px'>
                     <Grid container mt={5} spacing={3}  justifyContent={'center'} >
                         <Grid item justifyContent={'flex-start'} >{renderButton({lable:"Previse",hanbleOnClick:handlePrev})}</Grid>
                         <Grid item justifyContent={'flex-end'} >{renderButton({lable:"share",hanbleOnClick:handleshare})}</Grid>
                     </Grid>
+
                 </Box>
             </>
         )

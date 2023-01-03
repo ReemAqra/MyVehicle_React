@@ -1,11 +1,11 @@
 @import "./../variable";
 
 ._header{
-  background: #3e5a6e;
+  background: #18276c;
 
   &_contant{
     background: #1a190a;
-    color: #557e7e;
+    color: #283885;
     &:hover{
       color: white;
       font-size: 5px;
@@ -26,7 +26,7 @@
 
         }
         ul.active{
-          background-color:#3e5a6e ;
+          background-color:#18276c ;
           float: top;
           left: 0;
           opacity: 1;
@@ -40,7 +40,7 @@
           &:hover {
 
             transition: 0.3s ease all;
-            background: #557e7e;
+            background: #283885;
             border-top-right-radius: 25px;
             border-bottom-left-radius: 25px;
           }
@@ -60,7 +60,7 @@
     }
     &_btndiv{
       @media (max-width: 768px) {
-        background-color: #3e5a6e;
+        background-color: #283885;
         position: absolute;
         top: 210px;
         padding: 15px;
@@ -101,7 +101,7 @@
     position: absolute;
     color: #dcd214;
     &:hover {
-      color: rgba(71, 128, 183, 0.13);
+      color: rgb(40, 56, 133);
     }
   }
 
@@ -109,7 +109,7 @@
 ._header_content_btndiv{
   z-index: 100;
   @media (max-width: 768px) {
-    background-color: #3e5a6e;
+    background-color: #283885;
     position: absolute;
     top: 80px;
     padding: 2rem;
@@ -129,7 +129,7 @@
   border-radius: 10px;
   &:hover{
     transition: 0.2s ease all;
-    background: #557e7e;
+    background: #283885;
     color: #e5e8e8;
   }
 }

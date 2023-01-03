@@ -1,9 +1,9 @@
 ._header {
-  background: #3e5a6e;
+  background: #18276c;
 }
 ._header_contant {
   background: #1a190a;
-  color: #557e7e;
+  color: #283885;
 }
 ._header_contant:hover {
   color: white;
@@ -25,7 +25,7 @@
     transition: all 0.5s ease;
   }
   ._header_contant_item ul.active {
-    background-color: #3e5a6e;
+    background-color: #18276c;
     float: top;
     left: 0;
     opacity: 1;
@@ -35,7 +35,7 @@
 }
 ._header_contant_item ul li:hover {
   transition: 0.3s ease all;
-  background: #557e7e;
+  background: #283885;
   border-top-right-radius: 25px;
   border-bottom-left-radius: 25px;
 }
@@ -49,7 +49,7 @@
 }
 @media (max-width: 768px) {
   ._header_contant_btndiv {
-    background-color: #3e5a6e;
+    background-color: #283885;
     position: absolute;
     top: 210px;
     padding: 15px;
@@ -76,7 +76,7 @@
     color: #dcd214;
   }
   ._header_toggle:hover {
-    color: rgba(71, 128, 183, 0.13);
+    color: rgb(40, 56, 133);
   }
 }
 
@@ -85,7 +85,7 @@
 }
 @media (max-width: 768px) {
   ._header_content_btndiv {
-    background-color: #3e5a6e;
+    background-color: #283885;
     position: absolute;
     top: 80px;
     padding: 2rem;
@@ -108,7 +108,7 @@
 }
 ._header_content_btn:hover {
   transition: 0.2s ease all;
-  background: #557e7e;
+  background: #283885;
   color: #e5e8e8;
 }
 

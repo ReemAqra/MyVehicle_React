@@ -1,6 +1,6 @@
 import React, {createContext,
     useContext, useEffect, useState} from "react";
-    import {set, ref, getDatabase,update} from "firebase/database";
+import {set, ref, getDatabase,update} from "firebase/database";
 import {collection ,getDocs,setDoc,doc} from 'firebase/firestore'
 import {
     createUserWithEmailAndPassword,
@@ -13,8 +13,6 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({children}) => {
     const [user,setUser]=useState({})
-
-
     const signup =  (email,password) => {
         return createUserWithEmailAndPassword(auth,email,password).then(async(res )=>{
             // await setDoc(doc(db, "cities", "LA"), {

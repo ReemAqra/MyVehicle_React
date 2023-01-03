@@ -1,7 +1,7 @@
 /* home1 Section */
  section {
 
-    background-image: url("blackcar1.png");
+    /*background-image: url("blackcar1.png");*/
     background-size: cover;
     background-position:  center top;
     z-index: 1;
