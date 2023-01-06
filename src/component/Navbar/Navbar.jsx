@@ -78,16 +78,17 @@ export default function Navbar() {
                                 </motion.li>
                             </motion.ul>
                         </div>
-                        {!user ?
-                        <div className={clicked ? "_header_contant_btndiv active" : "_header_contant_btndiv"}>
+                        {!user ?<>
                             { i18n.language == 'en' && <Button onClick={()=>{i18n.changeLanguage('ar')}}>AR</Button>}
                             {i18n.language == 'ar' &&  <Button onClick={()=>{i18n.changeLanguage('en')}}>EN</Button>}
+
+                            <div className={clicked ? "_header_contant_btndiv active" : "_header_contant_btndiv"}>
 
                             <Link
                                 className="_header_content_btn  border border-1 ps-2 pe-2 p-1  me-3" to="Signup">SIGNIN
                             </Link>
 
-                        </div>
+                        </div></>
                             :
                             <>
                             { i18n.language == 'en' && <Button onClick={()=>{i18n.changeLanguage('ar')}}>AR</Button>}

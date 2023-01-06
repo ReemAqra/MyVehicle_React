@@ -7,8 +7,45 @@ import Button from "@mui/material/Button";
 import Logo from './MM_Logo.jpeg'
 import styled from "styled-components";
 import Servies from "./Servies";
+import Footer from "./Footer";
 export default function Home (){
-    const Warpper =styled.section`
+
+        return (
+            <>
+                <Warpper   className={s.section}>
+                        <Grid marginTop={'0px'} container spacing={2} alignItems={"center"} justifyContent={"center"}  maxWidth={'100%'}  className={s.div}>
+
+                                <Grid item xs={4}  className={"hero-section-data"}>
+                                    <p className={'intro-data opacity-50'}>
+                                        welcome To
+                                    </p>
+                                    <h1>MyVehicle</h1>
+                                    <p>Buy fast,sell Fast.</p>
+                                    <p> And we have great tools for that.</p>
+                                    <NavLink>
+                                        <button className={"bu-tton"}> show now</button>
+
+                                    </NavLink>
+                                </Grid>
+                                <Grid item xs={4} className={"hero-section-image"}>
+                                    <figure>
+                                        <img className={'image-styled'}  src={Logo}/>
+
+                                    </figure>
+                                </Grid>
+                        </Grid>
+                </Warpper>
+                <Servies />
+                <section>  </section>
+                <Footer />
+            </>
+        );
+
+
+
+}
+
+const Warpper =styled.section`
       padding: 1rem 0;
       //align-items: center;
       img {
@@ -89,37 +126,3 @@ export default function Home (){
 
       }
     `
-
-        return (
-            <>
-                <Warpper   className={s.section}>
-                        <Grid marginTop={'0px'} container spacing={2} alignItems={"center"} justifyContent={"center"}  maxWidth={'100%'}  className={s.div}>
-
-                                <Grid item xs={4}  className={"hero-section-data"}>
-                                    <p className={'intro-data opacity-50'}>
-                                        welcome To
-                                    </p>
-                                    <h1>MyVehicle</h1>
-                                    <p>Buy fast,sell Fast.</p>
-                                    <p> And we have great tools for that.</p>
-                                    <NavLink>
-                                        <button className={"bu-tton"}> show now</button>
-
-                                    </NavLink>
-                                </Grid>
-                                <Grid item xs={4} className={"hero-section-image"}>
-                                    <figure>
-                                        <img className={'image-styled'}  src={Logo}/>
-
-                                    </figure>
-                                </Grid>
-                        </Grid>
-                </Warpper>
-                <Servies />
-            </>
-        );
-
-
-
-}
-

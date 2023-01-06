@@ -79,6 +79,7 @@ const Warpper =styled.section`
 
   }
   p{
+    width: 70%;
     font-size: 13px;
   }
 

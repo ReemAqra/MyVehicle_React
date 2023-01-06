@@ -13,12 +13,11 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({children}) => {
     const [user,setUser]=useState({})
-    const signup =  (email,password) => {
+    const signup =  (email,phone,password) => {
         return createUserWithEmailAndPassword(auth,email,password).then(async(res )=>{
-            // await setDoc(doc(db, "cities", "LA"), {
-            //     name: "Los Angeles",
-            //     state: "CA",
-            //     country: "USA"
+            // await (doc(collection(db, "userInfo",'go')), {
+            //     email: email,
+            //     phone: phone,
             // });
         })
                 

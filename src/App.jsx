@@ -10,10 +10,13 @@ import Account from "./component/Account/Account";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {AuthContextProvider} from "./context/AuthContext";
 import ProtectedRoute from "./component/ProtectedRoute";
+import Footer from "./component/Home/Footer";
+import {AppProvider} from "./context/ProductContext";
+import SinglePageAcc from "./component/SinglePages/SinglePage_acc";
 class App extends Component{
   render(){
     return (
-        <>
+        <><AppProvider>
             <AuthContextProvider>
                 <Navbar />
                 <Routes>
@@ -22,6 +25,7 @@ class App extends Component{
                     <Route path="Product" element={<Product />}></Route>
                     <Route path="registration" element={<login />}></Route>
                     <Route path='login' element={<Login />}></Route>
+                    <Route path="SinglePageAcc/:id" element={<SinglePageAcc />}/>
                     <Route path='Account' element={
                         <ProtectedRoute>
                             <Account />
@@ -30,7 +34,10 @@ class App extends Component{
                     <Route path='SignUp' element={<SignUp />}></Route>
                     <Route path="*" element={<Error />}></Route>
                 </Routes>
+                <section></section>
+
             </AuthContextProvider>
+        </AppProvider>
         </>
     );
   }
