@@ -8,7 +8,7 @@
     color: #283885;
     &:hover{
       color: white;
-      font-size: 5px;
+      font-size: 2px;
     }
     &_item {
       @media screen and (max-width: 768px) {
@@ -21,7 +21,7 @@
           top: 8px;
           left: -100%;
           opacity: 1;
-          text-align: center;
+          text-align: start;
           transition: all 0.5s ease;
 
         }
@@ -36,9 +36,7 @@
       }
       ul {
         li {
-
           &:hover {
-
             transition: 0.3s ease all;
             background: #283885;
             border-top-right-radius: 25px;
@@ -67,26 +65,14 @@
         justify-content: center;
         //margin-left: 11px;
        // margin-right: 11px;
-
         width: 100%;
-
-
         left: -100%;
-
-
-
         text-align: center;
         transition: all 0.5s ease;
-
         flex-direction: row;
         opacity: 1;
-
-
       }
-
     }
-
-
   }
 
   &_logo{

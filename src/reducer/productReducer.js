@@ -5,11 +5,14 @@
              return {
                  ...state, isLoading: true,
              };
-         case "SET_API_DATA":
-             const featureData =action.payload.filter((currunt)=>{
-
-             })
+             case "SET_LOADING_ACC":
              return {
+                 ...state, isLoading: true,
+             };
+             case "SET_API_DATA_ACC":
+                 // const featureData =action.payload.filter((currunt)=>{
+                 // })
+                 return {
                  ...state ,
                  isLoading:false,
                  acss: action.payload,
@@ -37,6 +40,12 @@
                  ...state,
                  isSingleLoading: false,
                  singleProduct:action.payload
+             }
+         case "SET_VEHICLE_API_DATA":
+             return{
+                 ...state,
+                 isLoading:false,
+                 vehicles:action.payload
              }
      }
 

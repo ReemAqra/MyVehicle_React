@@ -17,7 +17,7 @@ export default function Login(){
         seterror('')
         try{
             await login(email,password)
-            navigate('./../account')
+            navigate('./../')
         }catch (e){
             seterror(e.message)
             console.log(e.message)

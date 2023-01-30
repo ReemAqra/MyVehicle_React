@@ -1,9 +1,11 @@
 @import "./../variable";
+
 ._header1{
   background-color: #557e7e;
   width: 100%;
   height: $headerHeight;
   padding: 0 1.5rem;
+  z-index: 1000;
   @include breakpoint(md) {
     padding: 0 3rem;
   }

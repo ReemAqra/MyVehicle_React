@@ -1,25 +1,20 @@
 import React, { useState} from 'react';
-import {Grid} from "@mui/material";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import sort from "./sort";
-import filterSelection from "./filterSelection";
-import ProductList from "./ProductList";
+import  FilterSelection  from "./FilterSelection";
 import {useProductContext} from "../../context/ProductContext";
 import styled from "styled-components";
 import {NavLink} from "react-router-dom";
 import ReactLoading from "react-loading";
+import VehiclePost from "./VehiclePost"
+import ProductList from "./ProductList"
+import Sort from "./Sort"
+import {useFilterContext} from "../../context/FilterContext";
 export default function Product () {
-    // const {hi} =useProductContext()
 
-    const [products, setProduct] =useState([
-           {id:1,Made:'kia',Distance:'180',Price:'200000',NumberOfDors:'4',GearType:'Manual',Model:'2021'},
-           {id:2,Made:'BMW',Distance:'60',Price:'250000',NumberOfDors:'4',GearType:'Manual',Model:'2015'},
-           {id:3,Made:'mercedes',Distance:'500',Price:'70000',NumberOfDors:'4',GearType:'Automatic',Model:'2019'},
-           {id:4,Made:'Audi',Distance:'350',Price:'200000',NumberOfDors:'4',GearType:'Automatic',Model:'2020'},
-       ])
-    const {isLoading , acss } =useProductContext()
-    console.log(acss,"<<<<<<<<<<<<<<<<<<<<<<<<<")
-
+    const {isLoading , acss ,vehicles } =useProductContext()
+    console.log(vehicles,"<<<<<<<<<<<<<<<<<<")
+    const {filter_vehicle}=useFilterContext();
+    console.log("filter_vehicle=>",filter_vehicle)
     if (isLoading)
         return <ReactLoading
             className="m-auto justify-content-center p-2 mt-5 mb-4"
@@ -30,30 +25,18 @@ export default function Product () {
             height={317}
             width={60}
         />
-
-
-
-
         return (
             <>
-
-                    <div className="container grid grid-filter-column ">
-                        {/*<h1 className=" bg-info ">Product component</h1>*/}
-                        <div className={'row p-5 justify-content-center'} >
+                <div className="container grid grid-filter-column ">
+                    {/*<h1 className=" bg-info ">Product component</h1>*/}
+                    <div className={'row p-5 justify-content-center'} >
                         <div className={'p-3 bg-light  col-md-2'}>
-
-
-                            <form>
-
-                                <input type={"text"} value={'Search'}/>
-                            </form>
-
-
+                            {/*<filterSelection />*/}
+                            <FilterSelection />
                         </div>
                         <div className="m-2 row  col-md-9 row">
                             <div className={'sort-filter'}>
-                                <sort />
-                                Soooorttt
+                                <Sort />
                             </div>
                             {/*<div className={'row main-product'}>*/}
                             {/*    <ProductList />*/}
@@ -65,6 +48,11 @@ export default function Product () {
                             {/*    </div>*/}
                             {/*)}*/}
                             {/*</div>*/}
+                            <div className={"mainproduct"}>
+                                <ProductList />
+                            </div>
+
+
                             <Warpper>
                                 <div className={'container'}>
                                     <div className={'w-100 row'}>
@@ -94,8 +82,10 @@ export default function Product () {
                                         })}
                                     </div>
                                 </div>
-
                             </Warpper>
+
+                            {/*<VehiclePost vehicles={vehicles}/>*/}
+
                         </div>
                         </div>
                     </div>

@@ -33,7 +33,7 @@ export default function SinglePageAcc() {
 
     const get =async ()=>{
         setLoading(true)
-        const querySnapshot = await getDoc(doc(db, "accessories",id));
+        const querySnapshot = await getDoc(doc(db, "Accessories",id));
 
         console.log("querySingleacss:",querySnapshot.data())
         setsinguleAcc( querySnapshot.data());
@@ -80,7 +80,7 @@ get()
             width={60}
         />  :
             <Warrper>
-                <PageNavigation  title={singuleAcc.PartName}/>
+                <PageNavigation  title={singuleAcc.partName}/>
                 <Container className={"container"}>
                     <div className={" grid row  container col-sm-12 "}>
                         {/*Product Image*/}
@@ -101,18 +101,18 @@ get()
                         </Grid>
                         {/*Product Data*/}
                         <div className={'product-data col-lg-6'}>
-                            <h2>{singuleAcc.PartName}</h2>
-                            <p className={'w-100 mb-0 opacity-75'}>{singuleAcc.CarType}</p>
+                            <h2>{singuleAcc.partName}</h2>
+                            <p className={'w-100 mb-0 opacity-75'}>{singuleAcc.carType}</p>
                             <p className={'w-100  border  border-bottom-1 opacity-75'}></p>
-                            <h5 style={{fontFamily:'fantasy'}}>{singuleAcc.Price} ₪</h5>
+                            <h5 style={{fontFamily:'fantasy'}}>{singuleAcc.price} ₪</h5>
                             <Grid  container mt={1} mb={1}  border={1} borderColor={'#ccc'} borderRadius={2} padding={2}>
                                 <Grid item xs={4}>
                                 <Grid className={'opacity-50 mb-1'} justifyContent={"center"} alignItems={"center"} display={"flex"}><GiWeight className={'me-1'} /> {t("Weight")}</Grid>
-                                <Grid  justifyContent={"center"} alignItems={"center"} display={"flex"}>{singuleAcc.Weight}</Grid>
+                                <Grid  justifyContent={"center"} alignItems={"center"} display={"flex"}>{singuleAcc.weight}</Grid>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <Grid className={'opacity-50 mb-1'} justifyContent={"center"} alignItems={"center"} display={"flex"}><AiOutlineQrcode className={'me-1'}/> {t("Code")}</Grid>
-                                    <Grid  justifyContent={"center"} alignItems={"center"} display={"flex"}>{singuleAcc.Code}</Grid>
+                                    <Grid  justifyContent={"center"} alignItems={"center"} display={"flex"}>{singuleAcc.code}</Grid>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <Grid className={'opacity-50 mb-1'} justifyContent={"center"} alignItems={"center"} display={"flex"}><ImLocation className={'me-1'} />{t("Location")}</Grid>
@@ -123,7 +123,7 @@ get()
                             <Grid container spacing={0}  width={'100%'} padding={2} border={1} borderColor={'#ccc'} borderRadius={2}>
                                 <p style={{fontFamily:'fantasy'}}><BiCommentDetail /> {t("Description")}:</p>
                                <p>
-                                   {singuleAcc.Description}
+                                   {singuleAcc.description}
                                </p> </Grid>
                             <Grid border={1} width={'100%'} padding={2} mt={2} borderColor={'#ccc'} borderRadius={2} >
                                 <p>Posted By: {singuleAcc.email}</p>
