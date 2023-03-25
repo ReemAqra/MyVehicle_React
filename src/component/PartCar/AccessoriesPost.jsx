@@ -6,6 +6,7 @@ import {NavLink} from "react-router-dom";
 import styled from "styled-components";
 import {IoColorFilterSharp } from "react-icons/io5";
 import FilterSelectionAccessories from "./FilterSelection_Accessories";
+import Footer from "../Home/Footer";
 
 export default function AccessoriesPost() {
     const {isLoading , acss  } =useProductContext()
@@ -34,8 +35,8 @@ export default function AccessoriesPost() {
                         <input type={"text"}
                                style={{width:'inherit',borderColor:'#18276c',borderWidth:'revert'}}
                                className={'border-5 p-2 fs-6 '}
-                               name_a={"text"}
-                               value_a={text_a}
+                               name={'text_a'}
+                               value={text_a}
                                onChange={updatefilterValue_a}
                                placeholder={'Search'}
                         />
@@ -80,11 +81,6 @@ export default function AccessoriesPost() {
                     </div>
 
                 </div>
-
-                <section className={'w-100 h-75'} style={{backgroundColor:'#18276c'}}>
-
-                    <p className={'text-white'}>Copyright © 2022-2023 by  Reem aqraa</p>
-                </section>
 
 
 

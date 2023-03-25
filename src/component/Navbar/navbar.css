@@ -1,5 +1,6 @@
 ._header {
   background: #18276c;
+  z-index: 1000;
 }
 ._header_contant {
   background: #1a190a;

@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import styled from "styled-components";
 import {useFilterContext} from "../../context/FilterContext";
 import Button from "@mui/material/Button";
-
+import ads1 from './../AdsImg/img_4.png'
+import Slider from '@mui/material/Slider';
 export default function FilterSelection () {
 
     const {updatefilterValue,ClearFilters,
-        filters:{text ,category,companyMake},all_products} =
+        filters:{text ,category,companyMake,price,MaxPrice,MinPrice},all_products} =
         useFilterContext();
 
 
@@ -17,12 +18,11 @@ export default function FilterSelection () {
         return (newVal = ["all", ...new Set(newVal)]);
         // console.log("newVal ~~~~",newVal);
     }
-    const categoryOnlyData = getUniqueData(
-        all_products,"category");
-
+    const categoryOnlyData = getUniqueData(all_products,"category");
     const companyData = getUniqueData(all_products,"companyMake")
     const fuelData = getUniqueData(all_products,"Fuel")
     const LocationData = getUniqueData(all_products,"Location")
+    const PriceData = getUniqueData(all_products,"price")
     console.log("newVal=> > >",companyData);
 
     return (
@@ -103,12 +103,35 @@ export default function FilterSelection () {
                         </select>
                     </form>
                 </div>
+                <div className={'filter_price'}>
+                    <h4>Price</h4>
+                    {/*<p><FormatPrice  price={price}/></p>*/}
+                <p>{price}</p>
+
+                    <input type={"range"}
+                           min={MinPrice}
+                           name='price'
+                           max={MaxPrice}
+                           color={'blue'}
+                           // value={price}
+
+                           style={{backgroundColor:"inherit",
+                               color:"unset"}}
+                           onChange={updatefilterValue}
+                    />
+
+                </div>
+
 
                 <div className={"filter-clear"}>
                     <button onClick={ClearFilters}>
                         Clear Filters
                     </button>
                 </div>
+                <div className={'mt-2'}>
+                    <img src={ads1} width={'100%'}/>
+                </div>
+
             </Warrper>
         );
 
@@ -173,9 +196,17 @@ padding: 0.5rem 0;
       &:hover{
         border-bottom-color: #dcd214;
       }
-
     }
     
+  }
+  .filter_price{
+    padding: 0.1rem 1rem;
+    color: #091549;
+    h4{
+      font-size: 15px;
+      margin-right: 15px;
+      font-family: sans-serif;
+    }
   }
 
   .filter-clear{

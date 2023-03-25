@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
-    Backdrop,
+
     CircularProgress,
     FilledInput,
     FormControl,
@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import {collection ,getDocs,setDoc,doc} from 'firebase/firestore'
 import {auth, db} from "../../FireDB";
-
 import { makeStyles } from '@mui/styles';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -37,6 +36,7 @@ import { useTranslation } from 'react-i18next';
 export default function AddAccessories (props) {
 
     const email = props.email
+    const  user_id=props.uid
     const { t, i18n } = useTranslation();
     console.log(email);
     const [CarType,setCarType]=React.useState('')
@@ -62,7 +62,7 @@ export default function AddAccessories (props) {
         root: {
             "& .MuiStepIcon-active": { color: "red" },
             "& .MuiStepIcon-completed": { color: "green" } ,
-            "& .Mui-disabled .MuiStepIcon-root": { color: '#3e5a6e' }
+            "& .Mui-disabled .MuiStepIcon-root": { color: '#283885' }
         }
     }));
     const c= useStyles()
@@ -74,7 +74,7 @@ export default function AddAccessories (props) {
     const renderText =({label,color,align,variant,fontSize,value})=> {
         return( <Typography
                 fontSize={fontSize ? fontSize:'20px'}
-                color={color ? color : "#3e5a6e"}
+                color={color ? color : "#283885"}
                 align={align ? align : "center"}
                 variant={variant ? variant : "h6"}
                 fontFamily='fantasy'>
@@ -110,7 +110,9 @@ export default function AddAccessories (props) {
         // handleshare();
     },[])
     const [imagesURL, setImagesURL] = useState([]);
-
+    function TransitionLeft(props) {
+        return <Slide {...props} direction="left" />;
+    }
     const handleshare=  (Transition) => async() =>{
 
         const storage = getStorage();
@@ -123,29 +125,27 @@ export default function AddAccessories (props) {
             uploadTask.on("state_changed",async (snapshot)=>{
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log('Upload is ' + progress + '% done');
+                console.log('Upload ~~~ ',images);
                 setprog(progress)
                 if(progress === 100){
-                    navigate('./../account')
+                    navigate('./../')
                     console.log("=============>> lenght ",images.length)
-                    if(index == images.length-1){
-                        await setDoc(doc(collection(db, "accessories")), {
-                            email:email,
-                            PartName: PartName,
-                            CarType:CarType,
-                            Code:Code,
-                            Weight:Weight,
+                    if(index === (images.length -1)){
+                        await setDoc(doc(collection(db, "Accessories")), {
+                            user:user_id,
+                            partName: PartName,
+                            carType:CarType,
+                            code:Code,
+                            weight:Weight,
                             Location:Location,
-                            Price:Price,
-                            Description:Description,
-                            // image:[
-                            //     imagesURL[0],
-                            //     images[1] && images[1].file.name ? images[1].file.name : null  ,
-                            //     images[2] && images[2].file.name ? images[2].file.name : null  ],
-                            images:[
-                                  imagesURL.length >= 1 ?  imagesURL[0]: null  ,
-                                  imagesURL.length >= 2 ?  imagesURL[1]: null  ,
-                                 // imagesURL[2],
-                                   imagesURL.length >= 3 ?  imagesURL[2]: null  ,
+                            price:Price,
+                            description:Description,
+                              images:[
+                                imagesURL[0],
+                                imagesURL[1]  ? imagesURL[1]:null,
+                                imagesURL[2]  ? imagesURL[2]:null,
+                                // imagesURL.length >= 2 ?  imagesURL[1]: null  ,
+                                // imagesURL.length >= 3 ?  imagesURL[2]: null  ,
                                 // imagesURL[1]  ,imagesURL[2]  ,
                             ]
                         });
@@ -158,7 +158,8 @@ export default function AddAccessories (props) {
                     </Snackbar>
                 }else {
                     return (<LinearProgress color="warning" />)}
-                }, (error) => {console.log(error)},   () => {
+                },
+                (error) => {console.log(error)},   () => {
                 getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                     console.log('File available at =>', downloadURL);
                     imagesURL.push(downloadURL)
@@ -166,23 +167,10 @@ export default function AddAccessories (props) {
                 });
             })
         })
-
-
-        console.log("=============>> img: ",imagesURL[0])
-
-
         setTransition(() => Transition);
         setOpen(true);
-
-        console.log("=============>> ",imagesURL[0])
     }
 
-
-
-
-    function TransitionLeft(props) {
-        return <Slide {...props} direction="left" />;
-    }
     const onChange = (imageList, addUpdateIndex) => {
 
         console.log(imageList, addUpdateIndex);
@@ -213,7 +201,7 @@ export default function AddAccessories (props) {
                     {/*{renderText({label: "Step 1 : Selling Info" })}*/}
                     <Typography
                         fontSize={'20px'}
-                        color={ "#3e5a6e"}
+                        color={ "#283885"}
                         align={"center"}
                         variant={ "h6"}
                         fontFamily='fantasy'>
@@ -223,9 +211,36 @@ export default function AddAccessories (props) {
                 <Box className={'w-100 mt-2'}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={4}>
-                            <TextField color={"warning"} fullWidth={'100%'} size={"small"}
-                                       label={t('Car Type')} variant='filled' value={CarType}
-                                       onChange={(e)=>{setCarType(e.target.value)}}/>
+                            <FormControl color={"warning"} size={"small"} variant="filled" sx={{ minWidth: '100%' }}>
+                                <InputLabel id="vehicleModelID">Model</InputLabel>
+                                <Select labelId="vehicleModelID"
+                                        value={CarType}
+                                        onChange={(e)=>{
+                                            setCarType(e.target.value)
+                                        }}>
+                                    <MenuItem value=""><em>None</em></MenuItem>
+                                    <MenuItem value={'SEAT'}>SEAT</MenuItem>
+                                    <MenuItem value={'KIA'}>KIA</MenuItem>
+                                    <MenuItem value={'Mercedes'}>Mercedes</MenuItem>
+                                    <MenuItem value={'Volkswagen'}>Volkswagen</MenuItem>
+                                    <MenuItem value={'BMW'}>BMW</MenuItem>
+                                    <MenuItem value={'Range Rover'}>Range Rover</MenuItem>
+                                    <MenuItem value={'Toyote'}>Toyote</MenuItem>
+                                    <MenuItem value={'Mitsubishi'}>Mitsubishi</MenuItem>
+                                    <MenuItem value={'Nissan'}>Nissan</MenuItem>
+                                    <MenuItem value={'Renault'}>Renault</MenuItem>
+                                    <MenuItem value={'Hyundai'}>Hyundai</MenuItem>
+                                    <MenuItem value={'Honda'}>Honda</MenuItem>
+                                    <MenuItem value={'Ferrari'}>Ferrari</MenuItem>
+                                    <MenuItem value={'OPEL'}>OPEL</MenuItem>
+                                    <MenuItem value={'AUDI'}>AUDI</MenuItem>
+                                    <MenuItem value={'Ford'}>Ford</MenuItem>
+                                    <MenuItem value={'PORSCHE'}>PORSCHE</MenuItem>
+                                    <MenuItem value={'Cadillac'}>Cadillac</MenuItem>
+                                    <MenuItem value={'VOLVO'}>VOLVO</MenuItem>
+                                    <MenuItem value={'SKODA'}>SKODA</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField color={"warning"} fullWidth={'100%'} size={"small"}
@@ -317,13 +332,10 @@ export default function AddAccessories (props) {
                 </Box>
                 <Box className='w-100'  minHeight='50px'>
                     <Grid container mt={4} spacing={2} justifyContent={'center'}  >
-
                         <Button
                             variant={"outlined"}
                             color={'warning'}
-                            onClick={()=> {
-                                setcurrentstep(currentstep+1)}
-                            }
+                            onClick={()=> { setcurrentstep(currentstep+1) }}
                             size="medium"
                         >{t("Next")}
                         </Button>
@@ -332,14 +344,12 @@ export default function AddAccessories (props) {
             </>
         )
     }
-    const step2= ()=>{
-        return(
-            <>
+    const step2= ()=>{ return(<>
                 <Box mt={4} mb={2} >
                     {/*{renderText({label: "Step 2 : Images Upload"})}*/}
                     <Typography
                         fontSize={'20px'}
-                        color={ "#3e5a6e"}
+                        color={ "#283885"}
                         align={"center"}
                         variant={ "h6"}
                         fontFamily='fantasy'>
@@ -347,12 +357,8 @@ export default function AddAccessories (props) {
                     </Typography>
                 </Box>
                 <Box >
-                    <ImageUploading multiple
-                                    value={images}
-                                    onChange={onChange}
-                                    maxNumber={maxNumber}
-                                    dataURLKey="data_url"
-                                    acceptType={["jpg"]}>
+                    <ImageUploading multiple value={images} onChange={onChange} maxNumber={maxNumber}
+                                    dataURLKey="data_url" acceptType={["jpg"]}>
                         {({
                               imageList, onImageUpload,
                               onImageRemoveAll, onImageUpdate,
@@ -361,11 +367,11 @@ export default function AddAccessories (props) {
                             // write your building UI
                             <Box  minWidth={'100%'}>
                                 <Button  style={isDragging ? { color: "red" } :
-                                    { backgroundColor:'#d3d9dc',minWidth:'350px',minHeight:'70px',
-                                        border:'3px dashed white',color:'#3e5a6e',marginBottom:'20px'}}
+                                    { backgroundColor:'#e7e7f8',minWidth:'350px',minHeight:'70px',
+                                        border:'3px dashed white',color:'#f8faff',marginBottom:'20px'}}
                                          onClick={onImageUpload}
                                          {...dragProps}>
-                                    <PhotoCamera  style={{color:'#3e5a6e'}}  />
+                                    <PhotoCamera  style={{color:'#283885'}}  />
                                 </Button>
                                 &nbsp;
                                 {/*<Button onClick={onImageRemoveAll}>Remove all images</Button>*/}
@@ -394,70 +400,68 @@ export default function AddAccessories (props) {
                     <Grid container mt={2} spacing={3}  justifyContent={'center'} >
                         <Grid item justifyContent={'flex-start'} >
                             {/*{renderButton({lable:"Previse",hanbleOnClick:handlePrev})}*/}
-                            <Button
-                                variant={"outlined"}
-                                color={'warning'}
-                                onClick={()=> {
-                                    setcurrentstep(currentstep -1)}
-                                }
-                                size="medium"
-                            >{t("Previse")}
+                            <Button variant={"outlined"} color={'warning'} onClick={()=> { setcurrentstep(currentstep -1)}}
+                                size="medium" >{t("Previse")}
                             </Button>
                         </Grid>
                         <Grid item justifyContent={'flex-end'} >
-                            <Button
-                                variant={"outlined"}
-                                color={'warning'}
-                                onClick={()=> {
-                                    setcurrentstep(currentstep+1)}
-                                }
-                                size="medium"
-                            >{t("Next")}
+                            <Button variant={"outlined"} color={'warning'}
+                                onClick={()=> { setcurrentstep(currentstep+1)}} size="medium">
+                                {t("Next")}
                             </Button>
                         </Grid>
                     </Grid>
                 </Box>
-            </>
-        )
-    }
+            </>) }
     const Finished= ()=>{
         return(
             <>
                 <Box width={'100%'}>
                     {/*{renderText({*/}
                     {/*    label: "Finished"})}<hr/>*/}
-                    <Grid container spacing={2} width={'100%'} >
+                    <Grid margin={"auto"} container spacing={2} width={'100%'} >
                         <Grid item xs={12} sm={6}>
-                            <img src={images[index].data_url} alt="" height='400px' width="100%" />
+                            <img src={images[index].data_url} border={2} className={'p-2'} style={{borderColor:'mintcream'}} alt="" height='400px' width="100%" />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <Grid container spacing={2} xs={12} >
-                                <Grid item xs={6}> <Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Part Name: </Typography></Grid>
-                                <Grid item xs={6}> <Typography>{PartName}</Typography></Grid>
+                                <Grid item xs={12} p={1}>
+                                    <TextField label="Part Name" defaultValue={PartName} InputProps={{ readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"} fullWidth/>
+                                </Grid>
                             </Grid>
                             <Grid container spacing={2} xs={12} >
-                                <Grid item xs={6}> <Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>CarType:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{CarType}</Typography></Grid>
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Car Type" defaultValue={CarType} InputProps={{readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}/>
+                                </Grid>
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Code" defaultValue={Code} InputProps={{ readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}/>
+                                </Grid>
                             </Grid>
                             <Grid container spacing={2} xs={12} >
-                                <Grid item xs={6}> <Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Code:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{Code}</Typography></Grid>
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Weight" defaultValue={Weight} InputProps={{readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}/>
+                                </Grid>
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Price" defaultValue={Price} InputProps={{readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}
+                                               startAdornment={<InputAdornment position="start">₪</InputAdornment>}/>
+                                </Grid>
                             </Grid>
                             <Grid container spacing={2} xs={12} >
-                                <Grid item xs={6}> <Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Weight:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{Weight}</Typography></Grid>
+                                <Grid item xs={12} p={1}>
+                                    <TextField label="Location" defaultValue={Location} InputProps={{ readOnly: true,}}
+                                        size={ "small"} variant="filled" color={"primary"} fullWidth/>
+                                </Grid>
                             </Grid>
                             <Grid container spacing={2} xs={12} >
-                                <Grid item xs={6}> <Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Location:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{Location}</Typography></Grid>
-                            </Grid>
-                            <Grid container spacing={2} xs={12} >
-                                <Grid item xs={6}> <Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Price:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{Price}</Typography></Grid>
-                            </Grid>
-                            <Grid container spacing={2} xs={12} >
-                                <Grid item xs={6}> <Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Description:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{Description}</Typography></Grid>
+                                <Grid item xs={12} p={1}>
+                                    <TextField label="Description" defaultValue={Description} InputProps={{ readOnly: true,}}
+                                        rows={3} size={ "small"} variant="filled" color={"primary"} fullWidth/>
+                                </Grid>
                             </Grid>
                             <Grid container m={0} spacing={4} xs={12} >
                                 {images.map((image ,index) => (
@@ -470,7 +474,6 @@ export default function AddAccessories (props) {
                                 ))
                                 }
                             </Grid>
-
                         </Grid>
                     </Grid>
                 </Box>
@@ -501,7 +504,6 @@ export default function AddAccessories (props) {
         )
     }
     useEffect(()=>{
-
     },[])
 
     return(
@@ -513,7 +515,7 @@ export default function AddAccessories (props) {
                             {/*{renderText({label: "New Accessories ad", fontSize:'40px'})}*/}
                             <Typography
                                 fontSize={'40px'}
-                                color={ "#3e5a6e"}
+                                color={ "#283885"}
                                 align={"center"}
                                 variant={ "h6"}
                                 fontFamily='fantasy'>

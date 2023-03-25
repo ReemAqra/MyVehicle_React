@@ -3,23 +3,34 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import  FilterSelection  from "./FilterSelection";
 import {useProductContext} from "../../context/ProductContext";
 import styled from "styled-components";
-import {NavLink} from "react-router-dom";
+import { animated } from '@react-spring/web'
+import { Parallax, ParallaxLayer } from '@react-spring/parallax'
+
+import {Link, NavLink} from "react-router-dom";
 import ReactLoading from "react-loading";
 import VehiclePost from "./VehiclePost"
 import ProductList from "./ProductList"
 import Sort from "./Sort"
 import {useFilterContext} from "../../context/FilterContext";
+import {IoColorFilterSharp} from "react-icons/io5";
+import {Grid} from "@mui/material";
+import img2 from "../Request/img6.png";
+import img1 from "../Request/img5.jpg";
+import video1 from "./makeup.mp4"
+import Footer from "../Home/Footer";
+import Ads from "../ads/ads";
+import Request from "../Request/Request";
 export default function Product () {
 
     const {isLoading , acss ,vehicles } =useProductContext()
     console.log(vehicles,"<<<<<<<<<<<<<<<<<<")
     const {filter_vehicle}=useFilterContext();
     console.log("filter_vehicle=>",filter_vehicle)
+    const alignCenter = { display: 'flex', alignItems: 'center' }
+
     if (isLoading)
         return <ReactLoading
             className="m-auto justify-content-center p-2 mt-5 mb-4"
-
-            // type="spinningBubbles"
             type={"bars"}
             color="#b2c1cc"
             height={317}
@@ -27,74 +38,133 @@ export default function Product () {
         />
         return (
             <>
+                <Warrper className={'w-100'}>
+                    <Grid className={'text'}>
+                        <img className={' p-3 mt-5 img-1-request bottom-0'}
+                             style={{right:'15%'}} width={'40%'} height={'auto'} src={img2}/>
+                        <Grid position={'absolute mt-3'} style={{width:'30%',backgroundColor:'white'}} >
+                            <h1 className={'mt-5 position-relative'} style={{fontFamily:'fantasy'}}>Find Your Match</h1>
+                            <hr/>
+                            <p className={'position-absolute opacity-50'}> list your car ~ free, secure, easy-to-use ways to sell.
+                            </p>
+                            <NavLink >
+                                <button  className={"bu-tton mt-5 "}>
+                                    <Link style={{textDecoration:'none'}} className="text-white" to="./../../Signup">SIGN UP FOR FREE</Link>
+                                </button>
+                            </NavLink>
+                        </Grid>
+                        <img className={'justify-content-end img-request  bottom-0'}
+                             style={{marginRight:'0px'}}
+                             width={'50%'} src={img1}/>
+                    </Grid>
+                </Warrper>
+                {/*<Request />*/}
+                <Ads />
                 <div className="container grid grid-filter-column ">
-                    {/*<h1 className=" bg-info ">Product component</h1>*/}
                     <div className={'row p-5 justify-content-center'} >
                         <div className={'p-3 bg-light  col-md-2'}>
-                            {/*<filterSelection />*/}
                             <FilterSelection />
                         </div>
                         <div className="m-2 row  col-md-9 row">
                             <div className={'sort-filter'}>
                                 <Sort />
                             </div>
-                            {/*<div className={'row main-product'}>*/}
-                            {/*    <ProductList />*/}
-                            {/*{products.map((product )=>*/}
-                            {/*    <div className="col-sm-6 col-md-4 col-lg-3  bg-secondary ">*/}
-                            {/*        <p>Made: {product.Made}</p>*/}
-                            {/*        <p>Price: {product.Price}</p>*/}
-                            {/*        <p>Model: {product.Model}</p>*/}
-                            {/*    </div>*/}
-                            {/*)}*/}
-                            {/*</div>*/}
                             <div className={"mainproduct"}>
                                 <ProductList />
                             </div>
-
-
-                            <Warpper>
-                                <div className={'container'}>
-                                    <div className={'w-100 row'}>
-                                        {acss.map((cuurent,index)=>{
-                                            // return <Product key={index} { ...cuurent}/>
-                                            console.log(cuurent.data())
-                                        return(
-                                            <div className={'col-sm-12 col-md-6 col-lg-3 mb-4'}>
-                                            <NavLink className={'text-decoration-none'}  to={`./../SinglePageAcc/${cuurent.id}`}>
-                                                <div className={'card'}>
-                                                    <figure>
-                                                        <img width={100} src={cuurent.data().images[0]}/>
-                                                        <figcaption className={'caprion'}>{cuurent.data().PartName}</figcaption>
-                                                    </figure>
-                                                    <div className={"card-data"}>
-                                                        <div className={"card-data-flex"}>
-                                                            <h3 className={'text-decoration-none'}>{cuurent.data().PartName}</h3>
-                                                            <p className={"card-data--price"}>{cuurent.data().Price} ₪</p>
-                                                        </div>
-                                                    </div>
-                                                    {/*<h1> hhhi: {cuurent.data().PartName}</h1>*/}
-                                                </div>
-                                            </NavLink>
-                                            </div>
-                                                )
-
-                                        })}
-                                    </div>
-                                </div>
-                            </Warpper>
-
-                            {/*<VehiclePost vehicles={vehicles}/>*/}
-
                         </div>
                         </div>
                     </div>
+                <section ></section>
+                <Footer />
 
             </>
         )
 
 }
 
+const Warrper = styled.section`
+  //justify-content: space-between;
+  background-color: white;
+  width: max-content;
+  justify-content: flex-end; 
+  .text {
+    width: 100%;
+    justify-content: center;
+    display: inline-flex;
+    position: relative;
+    bottom: 0;
+
+    .img-request{
+      overflow: hidden;
+      width: auto;
+      height: 100%;
+      
+    }
+
+    .img-1-request{
+      position: relative;
+      display: flex;
+      background-color: white;
+      &::after {
+        content: "";
+        width: 90%;
+        height: 80%;
+        position: absolute;
+        //left: 30%;
+        z-index: -1;
+        //background-color: rgb(158, 187, 203);
+        background-image: linear-gradient(90deg, #18276c 5%, #18276c 90%);
+        top: -2rem;
+      }
+    }
+    button {
+      margin-top: 2rem;
+      border: 0;
+      text-decoration: none;
+      //max-width: 50px;
+      background-color: #18276c;
+      color: rgb(255 255 255);
+      padding: 0.7rem 1.7rem;
+      border: none;
+      text-transform: uppercase;
+      text-align: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      -webkit-transition: all 0.3s ease 0s;
+      -moz-transition: all 0.3s ease 0s;
+      -o-transition: all 0.3s ease 0s;
+
+      &:hover,
+      &:active {
+        padding: 0.8rem 1.8rem;
+        background-color: #ffcc00;
+        color: #18276c;
+        font-weight: bolder;
+        //box-shadow: 0 2rem 2rem 0 rgb(141, 160, 239);
+        transform: scale(0.96);
+      }
+
+
+    }
+
+    &::after {
+      content: "";
+      width: 90%;
+      height: 100%;
+      left: 50%;
+      z-index: -1;
+
+      position: absolute;
+      background-image: linear-gradient(90deg, #ffcc00 5%, #ffcc00 90%);
+
+    }
+
+  }
+  
+
+`
 const Warpper =styled.section`
 
   padding: 3rem 0;

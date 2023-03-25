@@ -16,7 +16,8 @@ export default function  SignUp () {
     const [clicked_M,setclicked_M]=useState(false)
     const [email,setemail]=useState('')
     const [phone,setphone]=useState('')
-    const [location,setlocation]=useState('Ramallah')
+    const [location,setlocation]=useState('')
+    const [userName,setuserName]=useState()
     const [password,setpassword]=useState('')
     const [conformPassword,setconformPassword]=useState('')
     const [error,seterror]=useState('')
@@ -37,25 +38,13 @@ export default function  SignUp () {
             seterror('')
             setLoading(true)
             await signup(email,phone,password)
-            await setDoc(doc(collection(db, "userInfo",)), {
+            await setDoc(doc(collection(db, "Users",)), {
                 email: email,
                 phone: phone,
+                location:location,
+                username: userName,
             });
             navigate('./../account')
-            await Axios.post('http://localhost:3000/users',{
-                    email:email,
-                    phone:phone,
-                    location:location,
-    
-                }).then(function (response) {
-                    console.log(response);
-
-                  }) 
-                . catch ((err)=>{
-                    console.log(err);
-                }) 
-            
-           
 
         }catch (e){
             seterror(e.message)
@@ -91,10 +80,15 @@ const SaveUserinfo=async(email,phone,location)=>{
                             <form
                                 onSubmit={handleSubmit}
                                 className="_PersonalsignUpForm">
-                                <h2 className={`title`}>Login</h2>
+                                <h2 className={`title`}>Sign up</h2>
 
                                 {error && <p variant="danger">{error}</p>}
-
+                                <div className={`border border-1 input_field`}>
+                                    <i className="fas fa-envelope"></i>
+                                    <input value={userName}
+                                           onChange={(e)=>setuserName(e.target.value)}
+                                           type="text" placeholder="User Name" required/>
+                                </div>
                                 <div className={`border border-1 input_field`}>
                                     <i className="fas fa-envelope"></i>
                                     <input value={email}
@@ -107,39 +101,39 @@ const SaveUserinfo=async(email,phone,location)=>{
                                            onChange={(e)=>setphone(e.target.value)}
                                            type="phone" placeholder="phone" name="phone"/>
                                 </div>
-                                {/*<div className={`border border-1 input_field`}>*/}
-                                {/*    <i style={{lineHeight:'25px', width:'15%', color: '#353860', height:'30px'}}*/}
-                                {/*       className="fs-5 text-center fa-solid fa-location-dot"></i>*/}
-                                {/*    <select  value={location}*/}
-                                {/*             onChange={(e)=>setlocation(e.target.value)}*/}
-                                {/*             className={'border border-0 w-100'}>*/}
-                                {/*        <option value='Al_Birah'>Al_Birah</option>*/}
-                                {/*        <option value='Jerusalem'>Jerusalem</option>*/}
-                                {/*        <option value='Jericho'>Jericho</option>*/}
-                                {/*        <option value='Ramallah'>Ramallah</option>*/}
-                                {/*        <option value='Hebron'>Hebron</option>*/}
-                                {/*        <option value='Nablus'>Nablus</option>*/}
-                                {/*        <option value='Tulkarm'>Tulkarm</option>*/}
-                                {/*        <option value='Qalqilya'>Qalqilya</option>*/}
-                                {/*        <option value='Bethlehem'>Bethlehem</option>*/}
-                                {/*        <option value='Jenin'>Jenin</option>*/}
-                                {/*        <option value='Tubas'>Tubas</option>*/}
-                                {/*        <option value='AL-lyd'>AL-lyd</option>*/}
-                                {/*        <option value='AL-majdal'>AL-majdal</option>*/}
-                                {/*        <option value='AL-Nasra'>AL-Nasra</option>*/}
-                                {/*        <option value='Besan'>Besan</option>*/}
-                                {/*        <option value='Bir Al-Sabe`'>Bir Al-Sabe`</option>*/}
-                                {/*        <option value='Gaza'>Gaza</option>*/}
-                                {/*        <option value='Haifa'>Haifa</option>*/}
-                                {/*        <option value='Jaffa'>Jaffa</option>*/}
-                                {/*        <option value='khan Younis'>khan Younis</option>*/}
-                                {/*        <option value='Ramla'>Ramla</option>*/}
-                                {/*        <option value='Safad'>Safad</option>*/}
-                                {/*        <option value='Rafah'>Rafah</option>*/}
-                                {/*        <option value='Tabria'>Tabria</option>*/}
-                                {/*        <option value='Tobas'>Tobas</option>*/}
-                                {/*    </select>*/}
-                                {/*</div>*/}
+                                <div className={`border border-1 input_field`}>
+                                    <i style={{lineHeight:'25px', width:'15%', color: '#353860', height:'30px'}}
+                                       className="fs-5 text-center fa-solid fa-location-dot"></i>
+                                    <select  value={location}
+                                             onChange={(e)=>setlocation(e.target.value)}
+                                             className={'border border-0 w-100'}>
+                                        <option value='Al_Birah'>Al_Birah</option>
+                                        <option value='Jerusalem'>Jerusalem</option>
+                                        <option value='Jericho'>Jericho</option>
+                                        <option value='Ramallah'>Ramallah</option>
+                                        <option value='Hebron'>Hebron</option>
+                                        <option value='Nablus'>Nablus</option>
+                                        <option value='Tulkarm'>Tulkarm</option>
+                                        <option value='Qalqilya'>Qalqilya</option>
+                                        <option value='Bethlehem'>Bethlehem</option>
+                                        <option value='Jenin'>Jenin</option>
+                                        <option value='Tubas'>Tubas</option>
+                                        <option value='AL-lyd'>AL-lyd</option>
+                                        <option value='AL-majdal'>AL-majdal</option>
+                                        <option value='AL-Nasra'>AL-Nasra</option>
+                                        <option value='Besan'>Besan</option>
+                                        <option value='Bir Al-Sabe`'>Bir Al-Sabe`</option>
+                                        <option value='Gaza'>Gaza</option>
+                                        <option value='Haifa'>Haifa</option>
+                                        <option value='Jaffa'>Jaffa</option>
+                                        <option value='khan Younis'>khan Younis</option>
+                                        <option value='Ramla'>Ramla</option>
+                                        <option value='Safad'>Safad</option>
+                                        <option value='Rafah'>Rafah</option>
+                                        <option value='Tabria'>Tabria</option>
+                                        <option value='Tobas'>Tobas</option>
+                                    </select>
+                                </div>
                                 <div className={`border border-1 input_field`}>
                                     <i className="fas fa-lock"></i>
                                     <input value={password}
@@ -157,14 +151,14 @@ const SaveUserinfo=async(email,phone,location)=>{
                                     disabled={Loading}
                                     whileHover ={{scale:1.1}}
                                     whileTap={{scale:0.9}}
-                                    className={`_btn`} >Sign in</motion.button>
+                                    className={`_btn`} >Sign up</motion.button>
                                 {/*<p className="account_text">Already have an account?<Link to='./../login' id="sign_up_button2">Sign in</Link></p>*/}
                             </form>
 
                             <form
                                 onSubmit={handleSubmitLogin}
                                   className={style.sign_in_form}>
-                                <h2 className={'title'}>sign Up</h2>
+                                <h2 className={'title'}>Sign in</h2>
                                 {error && <Alert severity="error">{error}!</Alert>}
                                 <div className={style.input_field}>
                                     <i className="fas fa-user"></i>
@@ -185,7 +179,7 @@ const SaveUserinfo=async(email,phone,location)=>{
                                     className={style.btn} >Login
                                 </motion.button>
                                 <p className="account_text">Don't have an account?
-                                    <Link to='./../Signin' id="sign_up_button2">Sign up</Link>
+                                    <Link to='./../Signin' id="sign_up_button2">Sign in</Link>
                                 </p>
                                 <Outlet />
                             </form>

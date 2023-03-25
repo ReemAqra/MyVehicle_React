@@ -3,13 +3,17 @@ import styled from "styled-components";
 import {NavLink} from "react-router-dom";
 
 export default  function VehiclePost({vehicles}){
-    console.log("=>",vehicles)
-        return (
+    console.log("=========>",vehicles.length)
+
+    // if(vehicles.length === '0'){return (<> nooooooo </>)}
+        return (<>
+            {1 > 0 ? <div> nooooooo </div> :
             <Warrper>
                <div className={"container"}>
                    <div className={'w-100 row'}>
                        {vehicles.map((current,index)=>{
-                           console.log(current.data())
+                           // console.log(current.data())
+                           // console.log("=========>",vehicles.length)
 
                            return(
                                <div className={'col-sm-12 col-md-6 col-lg-3 mb-4'}>
@@ -34,6 +38,8 @@ export default  function VehiclePost({vehicles}){
                    </div>
                </div>
             </Warrper>
+            }
+            </>
         );
 
 }

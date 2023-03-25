@@ -19,14 +19,14 @@ export default function SellNavbar () {
                         whileHover={{ scale: 0.9 }}
                         whileTap={{ scale: 1.1 }}
                         className=" text-uppercase  mt-2 me-3 fs-6 ">
-                        <Link onClick={handleClick} className={clicked ?"link_nav  nav-link  " : "link_nav  nav-link  active"} to="sellcars">CARS</Link>
+                        <Link onClick={handleClick} className={clicked ?"link_nav  nav-link  " : "link_nav  nav-link  active"} to="sellcars"> ADD CARS</Link>
                     </motion.li>
 
                     <motion.li
                         whileHover={{ scale: 0.9 }}
                         whileTap={{ scale: 1.1 }}
                         className=" text-uppercase mt-2 me-3 fs-6  ">
-                        <Link onClick={handleClick} className= {clicked ?"link_nav  nav-link active" : "link_nav  nav-link  "} to="./sellAccessoriess">ACCESSORIES</Link>
+                        <Link onClick={handleClick} className= {clicked ?"link_nav  nav-link active" : "link_nav  nav-link  "} to="./sellAccessoriess">ADD ACCESSORIES</Link>
 
                         </motion.li>
 

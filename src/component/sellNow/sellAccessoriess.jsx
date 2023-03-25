@@ -7,6 +7,12 @@ import acc2 from './acc2.jpg'
 import acc3 from './acc3.jpg'
 import AddAccessories from "../Account/addAccessories";
 import {UseAuth} from "../../context/AuthContext";
+import {useFilterContext} from "../../context/FilterContext";
+import Footer from "../Home/Footer";
+import Ads from "../ads/ads";
+import {AiOutlineCloudDownload} from "react-icons/ai";
+import img_2 from "../IMG/img_12.png";
+import Request from "../Request/Request";
 export default function SellAccessoriess () {
     const {user,logout}=UseAuth();
     return (
@@ -45,6 +51,9 @@ export default function SellAccessoriess () {
                         </Grid>
                     </Grid>
                 </Warrper>
+                <Request />
+                <Ads />
+
 
                 {/*<section className={'bg-warning'}></section>*/}
                 {!user ? <>
@@ -59,10 +68,29 @@ export default function SellAccessoriess () {
                         </Grid>
                         </>
                     }
-                    <section className={'w-100 h-75'} style={{backgroundColor:'#18276c'}}>
-
-                        <p className={'text-white'}>Copyright © 2022-2023 by  Reem aqraa</p>
-                    </section>
+                <section >
+                    <div className={'row p-5'} style={{backgroundColor:'#ffffff'}}>
+                        <div className={'col-md-4  m-auto justify-content-center align-items-center'}>
+                            <h2 className={'ms-5 mb-5'} style={{fontFamily:'fantasy',color:'#18276c'}}> Find Your Match Faster</h2>
+                            <div className={'w-100 ms-5 justify-content-center align-items-center d-flex'}>
+                                <p style={{color:'#18276c',fontFamily:'revert'}}>Download Our App, into a better Cars shopping Experience and Save feature and more !</p>
+                            </div>
+                            <div className={'justify-content-center align-items-center d-flex'}>
+                                <Buttoon  >
+                                    <AiOutlineCloudDownload style={{color:'#18276c'}}
+                                                            className={'me-2 m-auto'} />
+                                    <Link style={{textDecoration:'none',color:'#18276c'}}
+                                          className="text-decoration-none" to="./../../Mobile">  Download Our App</Link>
+                                </Buttoon>
+                            </div>
+                        </div>
+                        <div className={'col-md-8 d-flex align-items-center justify-content-center'}>
+                            <img width={'50%'} src={img_2}/>
+                        </div>
+                    </div>
+                </section>
+                <section style={{height:'120px'}} ></section>
+                <Footer />
             </>
 
         );
@@ -139,4 +167,38 @@ const Warrper=styled.section`
 
   }
 
+`
+
+const Buttoon =styled.button`
+
+  height: 50px;
+  line-height: 46px;
+  min-width: 300px;
+  margin-top: 2rem;
+  border: 2px solid #ffe900;
+  background-color: #ffe900;
+  text-decoration: none;
+
+  //background-color: inherit;
+  color: rgb(26, 26, 159);
+  //padding: 0.7rem 1.7rem;
+  text-transform: uppercase;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+
+  &:hover,
+  &:active {
+    background-color: #9ebbcb;
+    font-weight: bolder;
+
+    transform: scale(1.0);
+    border: 10px;
+    border: #18276c;
+
+  }
 `
