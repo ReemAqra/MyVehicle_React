@@ -1,5 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {FilledInput, FormControl, Grid, InputAdornment, InputLabel, Select, Stack, TextField} from '@mui/material';
+import {
+    FilledInput,
+    FormControl,
+    Grid,
+    InputAdornment,
+    InputLabel,
+    Select,
+    Slide, Snackbar,
+    Stack,
+    TextField
+} from '@mui/material';
+
+//import { useSpring, animated } from '@react-spring/web'
+
 import { makeStyles } from '@mui/styles';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -16,14 +29,22 @@ import {DatePicker, LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import Alert from "@mui/material/Alert";
-import Axios from 'axios'
 import {AiFillDelete} from 'react-icons/ai'
-import {GrDocumentUpdate, GrUpdate} from 'react-icons/gr'
+import { GrUpdate} from 'react-icons/gr'
 import {useNavigate} from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import './accessories.Model.css'
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from "@mui/material/DialogActions";
+import video1 from "../Product/makeup.mp4";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {collection,query, where, getDocs, doc, setDoc} from "firebase/firestore";
+import {db} from "../../FireDB";
+import {UseAuth} from "../../context/AuthContext";
 
 export default function AddVehicles () {
+    const {user,logout}=UseAuth();
 
     const [images, setImages] = React.useState([]);
     const [vehicleModel,setvehicleModel]=useState('')//select
@@ -37,7 +58,7 @@ export default function AddVehicles () {
     const [Description,setDescription]=useState('')
 
     const [sellingMethod,setsellingMethod]=useState()
-    const [vehiclePrice,setvehiclePrice]=useState()
+    const [vehiclePrice,setvehiclePrice]=useState(0)
     const [vehicleLocation,setvehicleLocation]=useState()
 
     const [error,seterror]=useState('')
@@ -45,6 +66,8 @@ export default function AddVehicles () {
     const [index,setindex]=useState(0)
     const [prog,setprog]=useState(0)
     const [activeimg,setactiveimge] = React.useState(null)
+    const [imagesURL, setImagesURL] = useState([]);
+    const [open, setOpen] = React.useState(false);
 
     const maxNumber =5;
     const navigate =useNavigate();
@@ -63,45 +86,82 @@ export default function AddVehicles () {
     const handlePrev =()=>{
        setcurrentstep(currentstep-1)
     }
-    const handleshare =async (e)=>{
-        e.preventDefault()
+    const [transition, setTransition] = React.useState(undefined);
+    const handleClick = (Transition) => () => {
+        setTransition(() => Transition);
+        setOpen(true);
+    };
 
-        try {
-           await Axios.post('http://localhost:3000/vehicles',{
+    const handleshare = (Transition) => async()=>{
+        const storage = getStorage();
+        const metadata = {
+            contentType: 'image/jpeg'
+        };
+        images.map((imge,index)=>{
+            const storageRef = ref (storage, `imagesCars/${imge.file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, imge.file, metadata);
+            uploadTask.on("state_changed",async (snapshot)=>{
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    console.log('Upload ~~~ ',images);
+                    setprog(progress)
+                const Req = await getDocs(query(collection(db, "Vehicle"),
+                    where("Fuel", "==", vehiclefual)
+                    ,where("companyMake" ,"==", vehicleModel),
+                    where("Gear","==",Gear)))
+                Req.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    console.log(doc.id, "Request => ", doc.data());
+                });
+                    if(progress === 100){
+                        navigate('./../Account')
+                        console.log("====>> lenght ",images.length)
+                        if(index === (images.length -1 )){
+                            await setDoc(doc(collection(db, "Vehicle")), {
+                                user:user.uid,
+                                Fuel:vehiclefual,
+                                companyMake:vehicleModel,
+                                 Gear:Gear,
+                                 Location:vehicleLocation,
+                                carModel:ModelYear,
+                                price:vehiclePrice,
+                                 power:vehiclePower,
+                                mileage:vehicleMileage,
+                                 bodyColor:vehicleBodyColor,
+                                 sellingMethod:sellingMethod,
+                                 description:Description,
+                                 Made:vehicleModel,
+                                images:[
+                                    imagesURL[0],
+                                    imagesURL[1]  ? imagesURL[1]:null,
+                                    imagesURL[2]  ? imagesURL[2]:null,
+                                    imagesURL[3]  ? imagesURL[3]:null,
+                                    imagesURL[4]  ? imagesURL[4]:null,
 
-               vehicleModel: vehicleModel,
-               vehicleFuel:vehiclefual,
-               vehicleGear:Gear,
-               vehicleLocation:vehicleLocation,
-               vehicleModelYear:ModelYear,
-               vehiclePrice: vehiclePrice,
-               vehiclePower: vehiclePower,
-               vehicleMileage: vehicleMileage,
-               vehicleBodyColor:vehicleBodyColor,
-               ExpiryDate: LicenseExpiryDate,
-               vehicleSellingMethod: sellingMethod,
-               Description:Description,
-           }).then(function (response){
-                console.log(response);
-           }).catch((err)=>{
-               console.log(err);
-           })
-
-            navigate('./../account')
+                                ]
+                            });
 
 
-        }catch (e){
-            seterror(e.message)
-            console.log(e.message)
-        }
+                        }
+                    }
+                }, (error) => {console.log(error)},   () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                        console.log('File available at =>', downloadURL);
+                        imagesURL.push(downloadURL)
+                    });
+                })
+        })
+        setTransition(() => Transition);
+        setOpen(true)
     }
-    useEffect(()=>{
+    function TransitionLeft(props) {
+        return <Slide {...props} direction="left" />;
+    }
 
-    },[])
     const renderText =({label,color,align,variant,fontSize,value})=> {
        return( <Typography
                fontSize={fontSize ? fontSize:'20px'}
-               color={color ? color : "#3e5a6e"}
+               color={color ? color : "#283885"}
                align={align ? align : "center"}
                variant={variant ? variant : "h6"}
                fontFamily='fantasy'>
@@ -122,7 +182,6 @@ export default function AddVehicles () {
         )
     }
     const onChange = (imageList, addUpdateIndex) => {
-
         console.log(imageList, addUpdateIndex);
         setImages(imageList);
     };
@@ -223,20 +282,24 @@ export default function AddVehicles () {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6}>
+
                             <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <Stack spacing={4} color={"warning"}>
-                                    <DatePicker minDate={dayjs('1950-01-01')}
-                                                disableFuture
-                                                views={['year']}
-                                                label="Year of release"
-                                                value={ModelYear}
-                                                onChange={(newValue) => {setModelYear(newValue)
-                                                    console.log(ModelYear);}}
-                                                renderInput={(params) => <TextField size={"small"}
-                                                                                    variant={"filled"}
-                                                                                    color={"warning"}
-                                                                                    {...params}
-                                                                                    helperText={null} />}
+                                    <DatePicker
+                                         // minDate={dayjs(new Date(2000))}
+                                         disableFuture
+                                         // selected={ModelYear}
+                                         views={['year']}
+                                         dateFormat="yyyy"
+                                         label="Year of release"
+
+                                         onChange={(newValue) => {
+                                             setModelYear(dayjs(newValue).year().toString())
+                                             console.log(ModelYear)}}
+                                         renderInput={(params) =>
+                                             <TextField size={"small"} variant={"filled"}
+                                                        color={"warning"}
+                                                        {...params} helperText={null} />}
                                     />
                                 </Stack>
                             </LocalizationProvider>
@@ -284,9 +347,8 @@ export default function AddVehicles () {
                                         views={['year', 'month', 'day']}
                                         value={LicenseExpiryDate}
                                         onChange={(newValue) => {
-                                            setLicenseExpiryDate(newValue);
-                                            console.log(LicenseExpiryDate)
-                                        }}
+                                            setLicenseExpiryDate(dayjs(newValue).format('DD/MM/YYYY').toString());
+                                        console.log(LicenseExpiryDate)}}
                                         renderInput={(params) => <TextField size={"small"}
                                                                             variant={"filled"}
                                                                             color={"warning"}
@@ -306,7 +368,10 @@ export default function AddVehicles () {
                             onClick={()=> {
                                 if ((vehicleModel === '') || (vehiclefual  === '') || (vehicleMileage === '') || (vehicleBodyColor === '') || (Gear === '') || (LicenseExpiryDate === '') ) {
                                     seterror('fill all requirement ')
-                                }else {
+                                }else if (ModelYear === 'NaN'){
+                                    seterror('inter Year corectly ')
+                                }
+                                else {
                                     seterror('')
                                     setcurrentstep(currentstep+1)
                                 }
@@ -319,9 +384,30 @@ export default function AddVehicles () {
             </>
         )
     }
+    const handleClose = () => {
+        setOpen(false);
+    };
     const step2= ()=>{
         return(
             <>
+                <Dialog
+                    style={{backgroundColor:'rgba(0, 0, 0, 0.5)',margin:"auto"}}
+                    open={open }
+
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle bgcolor={'rgba(0, 0, 0, 0.5)'}>
+                        <Button fullWidth style={{color:'white',fontFamily:'fantasy',fontSize:'20px'}} onClick={handleClose}>Skip</Button>
+                    </DialogTitle>
+                    <DialogActions bgcolor={'rgba(0, 0, 0, 0.5)'}>
+                        {/*<section className={'d-flex align-items-center justify-content-center m-0 p-0'}>*/}
+                        <video bgcolor={'rgba(0, 0, 0, 0.5)'} src={video1} autoPlay loop muted/>
+                        {/*</section>*/}
+                    </DialogActions>
+                </Dialog>
                 <Box mt={4} mb={2} >
                     {renderText({label: "Step 2 : Selling Info"})}
                 </Box>
@@ -426,6 +512,20 @@ export default function AddVehicles () {
     const step3= ()=>{
         return(
             <>
+                <Dialog
+                 //   style={{height:'-webkit-fill-available'}}
+                    open={open }
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle>"User Information:"</DialogTitle>
+
+                    <DialogActions>
+                        <Button color={"warning"} onClick={handleClose}>Done</Button>
+                    </DialogActions>
+                </Dialog>
                 <Box mt={2} mb={2}>
                     {renderText({
                         label: "Upload car img"})}
@@ -478,6 +578,17 @@ export default function AddVehicles () {
                     <Grid container mt={5} spacing={3}  justifyContent={'center'} >
                         <Grid item justifyContent={'flex-start'} >{renderButton({lable:"Previse",hanbleOnClick:handlePrev})}</Grid>
                         <Grid item justifyContent={'flex-end'} >{renderButton({lable:"Next",hanbleOnClick:handleNext})}</Grid>
+                        {prog < 70 ? <Snackbar className={'w-25'} open={open} autoHideDuration={6000} onClose={handleClose}>
+                                <Alert onClose={handleClose} severity="info" variant="filled" sx={{ width: '100%' }}>
+                                    uploaging...
+                                </Alert>
+                            </Snackbar>
+                            : <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                                <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: '100%' }}>
+                                    your ad uploading successfully
+                                </Alert>
+                            </Snackbar>
+                        }
                     </Grid>
                 </Box>
             </>
@@ -489,7 +600,7 @@ export default function AddVehicles () {
                 <Box mt={2} mb={2}>
                     {/*{renderText({label: "Finished"})}*/}
 
-                    <Grid container spacing={2} width={'100%'}>
+                    <Grid margin={"auto"}  container spacing={2} width={'100%'}>
                         <Grid item xs={12} sm={6}>
                             <Grid minHeight={'300px'}  container m={0} spacing={4} xs={12}>
                                 <img src={images[index].data_url} alt="" height='400px' width="100%" />
@@ -502,71 +613,91 @@ export default function AddVehicles () {
                                              alt="" width="74" height='70'
                                         />
                                     </Box>
-                                ))
-                                }
+                                ))}
                             </Grid>
-
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}> <Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}> Model: </Typography></Grid>
-                                <Grid item xs={6}> <Typography>{vehicleModel}</Typography></Grid>
+                            <Grid container spacing={2} xs={12} >
+                                <Grid item xs={12} p={1}>
+                                    <TextField label="Model" defaultValue={vehicleModel} InputProps={{ readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"} fullWidth/>
+                                </Grid>
                             </Grid>
+                            <Grid container spacing={2} xs={12} >
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Fuel" defaultValue={vehiclefual} InputProps={{readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}/>
+                                </Grid>
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Gear" defaultValue={Gear} InputProps={{ readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}/>
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={2} xs={12} >
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Year of release" defaultValue={ModelYear} InputProps={{readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}/>
+                                </Grid>
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Power" defaultValue={vehiclePower} InputProps={{ readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}
+                                               startAdornment={<InputAdornment position="end">CC</InputAdornment>}/>
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={2} xs={12} >
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Mileage" defaultValue={vehicleMileage} InputProps={{readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}
+                                               startAdornment={<InputAdornment position="end">KM</InputAdornment>}/>
+                                </Grid>
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Body Color" defaultValue={vehicleBodyColor} InputProps={{ readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}
+                                             />
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={2} xs={12} >
+                                <Grid item xs={12} p={1}>
+                                    <TextField label="License Expiry Date" defaultValue={LicenseExpiryDate} InputProps={{ readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"} fullWidth/>
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={2} xs={12} >
+                                <Grid item xs={12} p={1}>
+                                    <TextField label="Price" defaultValue={vehiclePrice} InputProps={{ readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"} fullWidth
+                                               startAdornment={<InputAdornment position="start">₪</InputAdornment>}/>
 
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}> Fuel: </Typography></Grid>
-                                <Grid item xs={6}> <Typography>{vehiclefual}</Typography></Grid>
+                                </Grid>
                             </Grid>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Gear: </Typography></Grid>
-                                <Grid item xs={6}> <Typography>{Gear}</Typography></Grid>
+                            <Grid container spacing={2} xs={12} >
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Selling Method" defaultValue={sellingMethod} InputProps={{readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}
+                                             />
+                                </Grid>
+                                <Grid item xs={6} p={1}>
+                                    <TextField label="Loaction" defaultValue={vehicleLocation} InputProps={{ readOnly: true,}}
+                                               size={ "small"} variant="filled" color={"primary"}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Year of release:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{JSON.stringify(ModelYear)}</Typography></Grid>
-                            </Grid>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Power:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{vehiclePower} CC</Typography></Grid>
-                            </Grid>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}> Mileage: </Typography></Grid>
-                                <Grid item xs={6}> <Typography>{vehicleMileage} KM</Typography></Grid>
-                            </Grid>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Body Color : </Typography></Grid>
-                                <Grid item xs={6}> <Typography>{vehicleBodyColor}</Typography></Grid>
-                            </Grid>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>License Expiry Date:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{JSON.stringify(LicenseExpiryDate)}</Typography></Grid>
-                            </Grid>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>selling Method:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{sellingMethod}</Typography></Grid>
-                            </Grid>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Price:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{vehiclePrice}</Typography></Grid>
-                            </Grid>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Loaction:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{vehicleLocation}</Typography></Grid>
-                            </Grid>
-                            <Grid  container spacing={2} xs={12}>
-                                <Grid item xs={6}><Typography className={'fs-5 '} style={{fontFamily:'fantasy'}}>Description:</Typography></Grid>
-                                <Grid item xs={6}> <Typography>{Description}</Typography></Grid>
+                            <Grid container spacing={2} xs={12} >
+                                <Grid item xs={12} p={1}>
+                                    <TextField label="Description" defaultValue={Description} InputProps={{ readOnly: true,}}
+                                               rows={3} size={ "small"} variant="filled" color={"primary"} fullWidth/>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
-
                 </Box>
                 <Box className='w-100' minHeight='50px'>
                     <Grid container mt={5} spacing={3}  justifyContent={'center'} >
                         <Grid item justifyContent={'flex-start'} >{renderButton({lable:"Previse",hanbleOnClick:handlePrev})}</Grid>
-                        <Grid item justifyContent={'flex-end'} >{renderButton({lable:"share",hanbleOnClick:handleshare})}</Grid>
+                        <Grid item justifyContent={'flex-end'} >
+                            <Button variant={"outlined"} color={'warning'} onClick={handleshare(TransitionLeft) } size="medium">Double click to upload</Button>
+                        </Grid>
                     </Grid>
-
                 </Box>
             </>
         )
@@ -574,6 +705,7 @@ export default function AddVehicles () {
 
     return (
            <>
+
                <Grid container className={' w-100   h-100 justify-content-center align-items-center'}>
                    <Grid  item xs={12} sm={12} className=' w-100' >
                        <Paper >
@@ -607,3 +739,8 @@ export default function AddVehicles () {
            </>
     );
 }
+
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Grid direction="up" ref={ref} {...props} />;
+});

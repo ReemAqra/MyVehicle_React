@@ -6,6 +6,9 @@ import car1 from './car1.png'
 import {UseAuth} from "../../context/AuthContext";
 import AddAccessories from "../Account/addAccessories";
 import AddVehicles from "../Account/addVehicles";
+import Footer from "../Home/Footer";
+import Ads from "../ads/ads";
+import Request from "../Request/Request";
 export default function  Sellcars () {
 
     const {user,logout}=UseAuth();
@@ -41,8 +44,10 @@ export default function  Sellcars () {
                     </Grid>
 
                 </Warrper>
+                <Request />
+                <Ads />
                 {!user ? <>
-                        <div>u have to sign in</div>
+                        <section className={'m-auto'}> Sign Up For Free</section>
                     </>
                     : <>
                         <Grid padding={5} bgcolor={'#dbdee9'}>
@@ -53,10 +58,9 @@ export default function  Sellcars () {
                         </Grid>
                     </>
                 }
-                <section className={'w-100 h-75'} style={{backgroundColor:'#18276c'}}>
 
-                    <p className={'text-white'}>Copyright © 2022-2023 by  Reem aqraa</p>
-                </section>
+                <section style={{height:'80px'}}></section>
+                <Footer />
             </div>
         );
 

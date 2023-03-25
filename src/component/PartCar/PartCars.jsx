@@ -1,12 +1,21 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import img1 from './1.jpg'
 import img2 from './2.jpg'
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 import AccessoriesPost from "./AccessoriesPost";
+
+import {Grid} from "@mui/material";
+import Footer from "../Home/Footer";
+import Ads from "../ads/ads";
+import Request from "../Request/Request";
 export default function  PartCars (){
-        return (
+
+
+    return (
+
             <div>
+
                 <Warrper className="image-bg bg-dark parallax overlay pt24 pb24">
                     <div className="background-image-holder">
                         <img alt="Used auto engine parts" style={{overflow:"hidden"}} width={'100%'}   className="background-image"
@@ -29,9 +38,14 @@ export default function  PartCars (){
                     </div>
 
                 </Warrper>
+                <Request />
+                <Ads />
                 <div>
                     <AccessoriesPost />
                 </div>
+
+                <section style={{height:'80px'}}></section>
+                <Footer />
             </div>
         );
 }
@@ -196,3 +210,6 @@ const Warrper=styled.section`
   }
 `
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Grid direction="up" ref={ref} {...props} />;
+});

@@ -142,7 +142,6 @@ export default function SinglePage_Vehicles() {
                                             <GoGear className={'me-1'} />{t("Gear")}</Grid>
                                         <Grid  fontFamily={"fantasy"} justifyContent={"center"} alignItems={"center"} display={"flex"}>{Single_Veh.Gear}</Grid>
                                     </Grid>
-
                                 </Grid>
                                 <Grid  container  mb={1}  border={1} borderColor={'#ccc'} borderRadius={2} padding={1}>
                                     <Grid item xs={4}>

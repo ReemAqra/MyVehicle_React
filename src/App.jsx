@@ -18,6 +18,9 @@ import SinglePageAcc from "./component/SinglePages/SinglePage_acc";
 import SinglePage_Vehicles from "./component/SinglePages/SinglePage_Vehicles";
 import Sellcars from "./component/sellNow/sellcars";
 import SellAccessoriess from "./component/sellNow/sellAccessoriess";
+import Request from "./component/Request/Request";
+import About from "./component/About/about";
+import Mobile from "./component/Mobile/Mobile";
 class App extends Component{
   render(){
     return (
@@ -29,6 +32,9 @@ class App extends Component{
                 <Routes>
                     <Route path="/" element={<Home />}></Route>
                     <Route path="Home" element={<Home />}></Route>
+                    <Route path="About-Us" element={<About />}></Route>
+                    <Route path="Request" element={<Request />}></Route>
+                    <Route path="Mobile" element={<Mobile />}></Route>
                     <Route path="Product" element={<Product />}></Route>
                     <Route path="Part-Cars" element={<PartCars />}></Route>
                     <Route path="sellNow" element={<SellNow />}>

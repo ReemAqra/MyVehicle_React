@@ -28,10 +28,7 @@ const initialState = {
         console.log("querySnapshot:",querySnapshot)
         const acss = await  querySnapshot.docs;
         console.log("acss:",acss)
-        // querySnapshot.docs.forEach((doc) => {
-        //     setacc(acc =>[...acc,doc.id])
-        //     console.log("accessories = ",acc)
-        // })
+
         dispatch({type: "SET_API_DATA_ACC", payload: acss})
     }
     catch (error) {

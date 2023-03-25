@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {UseAuth} from "../../context/AuthContext";
 import {useNavigate} from "react-router-dom";
-import { IoPersonCircleOutline } from 'react-icons/io5';
-import { IoLocationSharp ,IoMail } from 'react-icons/io5';
-import { AiFillPhone } from 'react-icons/ai';
+import logo from './../IMG/logo2.png'
 import {AnimatePresence, motion} from "framer-motion";
 import ImageUploading from "react-images-uploading";
-import { CCollapse} from "@coreui/react";
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import Tabs from '@mui/material/Tabs';
@@ -20,7 +17,8 @@ import "./account.Model.css";
 import {Grid} from "@mui/material";
 import MyPost_V from "./MyPost_V";
 import {useTranslation} from "react-i18next";
-
+import SAVED_CARS from "./SAVED_CARS";
+import SAVED_PARTS from "./SAVED_PARTS"
 
 export default function Account (){
     const { t, i18n } = useTranslation();
@@ -40,8 +38,8 @@ export default function Account (){
         { icon: "⚙️️", label: t("New Accessories ad"),contact: <AddAccessories email={emaill} uid={user.uid} />},
     ];
     const allIngredients_F = [
-        { icon: "❤  ", label: " Vehicle " ,contact: <AddVehicles /> },
-        { icon: "❤  ", label: " accessories ",contact: <AddAccessories />},
+        { icon: "❤  ", label: " Cars 🚘" ,contact: <SAVED_CARS /> },
+        { icon: "❤  ", label: " PartCars ⚙",contact: <SAVED_PARTS />},
     ];
     const allIngredients_M = [
         { icon: " ", label: "My Vehicle " ,contact: <MyPost_V email={emaill} /> },
@@ -123,69 +121,44 @@ export default function Account (){
 
     return (
         <>
-            <Grid  className='p-4  row pt-3 justify-content-center vh-100  '  maxHeight style={{background :'#3e5a6e'}}>
-                {/*bg-opacity-10   bg-secondary*/}
-                <div className='card  col-md-4 pt-2 ps-2 border-0  ' style={{background :'#3e5a6e'}}>
-                    <div className='card shadow rounded-2 container border-0 text-center'>
-                        <div className="card-header rounded-0 container border-0 bg-white">
-                            <i className="fs-1 p-2" style={{color :'#3e5a6e'}}><IoPersonCircleOutline /></i>
-                        </div>
-                        <div className="card-body rounded-0 container border-0 justify-content-start d-grid">
-                            <p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#4d636f"}}><IoMail /></i>{user && user.email}</p>
-                            {/*<p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#4d636f"}}><IoLocationSharp /></i>{ userdata.loaction}</p>*/}
-                            {/*<p className='fs-5 text-start '><i className="me-3 fs-5" style={{color: "#4d636f"}}><AiFillPhone /></i>  {JSON.stringify(userdata.phone )}</p>*/}
-                        </div>
-                        <button className='mb-4 border-0 bg-warning  text-center d-flex justify-content-center' onClick={handleLogout} >Log out</button>
+            <Grid  className='  row  justify-content-end vh-100  '
+                   maxHeight style={{background :'#a7adcc'}}>
+                <div className='  col-md-3 pt-2 ps-2  top-0' style={{background :'#18276c',overflow:'hidden'}}>
+                    {/*<div className=' shadow  container text-center bg-white' style={{width:'90%'}}>*/}
+                    {/*    <div className="card-header  container border-0 bg-white p-3">*/}
+                    {/*        <i className="fs-1 p-2" style={{color :'#283885'}}><IoPersonCircleOutline /></i>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="card-body rounded-0 container border-0 justify-content-start d-grid">*/}
+                    {/*        <p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#1e2c6b"}}><IoMail /></i>{user && user.email}</p>*/}
+                    {/*        /!*<p className='fs-5 text-start'><i className="me-3 fs-5" style={{color: "#4d636f"}}><IoLocationSharp /></i>{ userdata.loaction}</p>*!/*/}
+                    {/*        /!*<p className='fs-5 text-start '><i className="me-3 fs-5" style={{color: "#4d636f"}}><AiFillPhone /></i>  {JSON.stringify(userdata.phone )}</p>*!/*/}
+                    {/*    </div>*/}
+                    {/*    <button className='mb-4 w-100 border-0 bg-warning  text-center d-flex justify-content-center' onClick={handleLogout} >Log out</button>*/}
+                    {/*</div>*/}
+
+                    <div className={'w-100'}>
+                        <img src={logo} width={'100%'}/>
+
                     </div>
-                    <div className='card mt-5 shadow rounded-2 container border-0 text-center's>
+                    <div className='card  mt-5  container border-0 ' style={{background :'#18276c'}}>
                         <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} aria-label="Vertical tabs example" sx={{ borderRight: 1, borderColor: 'divider' }}>
-                            <Tab label={t("My Ads")} {...a11yProps(0)} />
-                            <Tab label={t("add an Ad")} {...a11yProps(1)} />
-                            <Tab label={t("My Favorite")} {...a11yProps(2)} />
+                            <Tab className={'fa-white'}  style={{color:'white',fontFamily:'fantasy'}}  label={t("⚙  Cars")} {...a11yProps(0)} />
+
+                            <Tab className={'fa-white'} style={{color:'white',fontFamily:'fantasy'}} label={t("⚙  Parts Cars ")} {...a11yProps(1)} />
+                            <Tab className={'fa-white'}  style={{color:'white',fontFamily:'fantasy'}}  label={t("⚙  Saved")} {...a11yProps(2)} />
                         </Tabs>
                     </div>
+
                 </div>
-                <div className= 'mt-2 col-md-8  ps-2 '>
-                    <div className='card shadow'>
-                        <TabPanel value={value} index={0}>
-                            <div className="window">
-                                <nav className={"navadd"}>
-                                    <ul className={"uladd"}>
-                                        {initialTabs_M.map((item) => (
-                                            <li key={item.label}
-                                                className={activeselectedtab(item)}
-                                                // className={item === selectedTab ? `liadd selected ` : `liadd selected `}
-                                                onClick={() => {
-                                                    setSelectedTab_M(item)
-                                                    setactivetab(item)
-                                                }}
-                                            >
-                                                {`${item.icon} ${item.label}`}
-                                                {item === selectedTab_M ? (
-                                                    <motion.div className="underline" layoutId="underline" />
-                                                ) : null}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </nav>
-                                <main>
-                                    <AnimatePresence exitBeforeEnter>
-                                        <motion.div key={selectedTab_M ? selectedTab_M.label : "empty"}
-                                                    initial={{ y: 10, opacity: 0 }}
-                                                    animate={{ y: 0, opacity: 1 }}
-                                                    exit={{ y: -10, opacity: 0 }}
-                                                    transition={{ duration: 0.2 }}
-                                        >
-                                            {selectedTab_M ? selectedTab_M.contact : "😋"}
-                                        </motion.div>
-                                    </AnimatePresence>
-                                </main>
-                            </div>
-
-
-                        </TabPanel>
-
+                <div className= 'mt-2 col-md-9 d-flex justify-content-center ps-2 p-2' >
+                    <div className='card shadow' style={{width:'95%'}}>
                         <TabPanel value={value} index={1}>
+                            <MyPost_acc email={emaill} />
+                        </TabPanel>
+                        <TabPanel value={value} index={0}>
+                            <MyPost_V email={emaill} />
+                        </TabPanel>
+                        <TabPanel value={value} index={5}>
                             <div className="window">
                                 <nav className={"navadd"}>
                                     <ul className={"uladd"}>
@@ -247,7 +220,7 @@ export default function Account (){
                                                     exit={{ y: -10, opacity: 0 }}
                                                     transition={{ duration: 0.2 }}
                                         >
-                                            {selectedTab_f ? selectedTab_f.icon : "😋"}
+                                            {selectedTab_f ? selectedTab_f.contact : "😋"}
                                         </motion.div>
                                     </AnimatePresence>
                                 </main>
@@ -290,6 +263,7 @@ export default function Account (){
                                 </ImageUploading>
                             </Box>
                         </TabPanel>
+
                     </div>
                 </div>
             </Grid>

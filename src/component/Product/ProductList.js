@@ -10,7 +10,7 @@ export default function ProductList() {
            return <GridView product={filter_vehicle} />
        }
        if (grid_view === false){
-           return <GridView product={filter_vehicle} />
+           return <ListView product={filter_vehicle} />
 
            // return <ListView product={filter_vehicle}/>
        }

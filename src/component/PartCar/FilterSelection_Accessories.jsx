@@ -1,11 +1,12 @@
 import React from 'react';
 import {IoColorFilterSharp} from "react-icons/io5";
 import {useFilterContext} from "../../context/FilterContext";
+import img from "./../AdsImg/img_4.png";
 import styled from "styled-components";
 
 export default function FilterSelectionAccessories () {
     const { updatefilterValue_a,ClearFilters,
-        filters_a:{text_a },all_acc}
+        filters_a:{text_a ,locations_a },all_acc}
         =useFilterContext();
 
     const getUniqueData =(data,property)=>{
@@ -23,9 +24,9 @@ export default function FilterSelectionAccessories () {
                 <div className={"filter-company"}>
                     <h6 className={''} style={{fontFamily:'fantasy'}}>Location</h6>
                     <form action={"#"}>
-                        <select name={'locations'}
+                        <select name={'locations_a'}
                                 onClick={updatefilterValue_a}
-                                id={'locations'}
+                                id={'locations_a'}
                                 className={'w-100 p-2 border-bottom-warning'}>
                             {LocationData.map((curElem,index)=>{
                                 return(
@@ -42,6 +43,12 @@ export default function FilterSelectionAccessories () {
                         </button>
                     </div>
                 </div>
+                <div className={'m-auto'}>
+                    <a href="http://join-shortest.com/ref/2397c06d66?user-type=new">
+                        <img src={img} title="MyVehicle.com" width="250" height="250" />
+                    </a>
+                </div>
+
             </Warrper>
         );
 
